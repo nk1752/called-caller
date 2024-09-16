@@ -1,0 +1,22 @@
+name: called
+
+on:
+  workflow_call:
+    inputs:
+      bg:
+        type: string
+        required: true
+      env:
+        type: string
+        required: true
+
+jobs:
+  called:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: echo
+        run: |
+          echo "called: ${{ inputs.bg }} ${{ inputs.env }}"

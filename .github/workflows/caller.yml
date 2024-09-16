@@ -1,0 +1,19 @@
+name: caller
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+    caller:
+        runs-on: ubuntu-latest
+        steps:
+        - name: checkout
+          uses: actions/checkout@v4.1.6
+    
+        - name: call
+          uses: ./.github/workflows/called
+          with:
+            bg: 'foo'
+            env: 'bar'
