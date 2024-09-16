@@ -20,4 +20,4 @@ jobs:
 
       - name: echo
         run: |
-          echo "called: ${{ inputs.bg }} ${{ inputs.env }}"
+          echo "caller send: ${{ inputs.bg }} ${{ inputs.env }}"

@@ -11,8 +11,14 @@ permissions:
   id-token: write
 
 jobs:
-    caller-job:
+    caller-job1:
       uses: nk1752/called-caller/.github/workflows/called.yml@main
       with:
-        bg: 'foo'
-        env: 'bar'
+        bg: 'accounts'
+        env: 'dev'
+
+    caller-job2:
+      uses: nk1752/called-caller/.github/workflows/called.yml@main
+      with:
+        bg: 'accounts'
+        env: 'qa'
