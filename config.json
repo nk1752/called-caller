@@ -1,0 +1,12 @@
+{
+    "accounts-dev":
+        {
+            "bg": "accounts",
+            "env": "dev"
+        },
+    "accounts-qa":
+        {
+            "bg": "accounts",
+            "env": "qa"
+        }
+}

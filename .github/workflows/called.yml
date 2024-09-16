@@ -21,3 +21,17 @@ jobs:
       - name: echo
         run: |
           echo "caller send: ${{ inputs.bg }} ${{ inputs.env }}"
+
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: read config
+        run: |
+          echo "reading config"
+          jq . config.json
+
+      - name: search
+        run: |
+          echo "searching for ${{ inputs.bg }} ${{ inputs.env }}"
+          name=${{ inputs.bg }}-${{ inputs.env }}
+          jq --arg name "$name" '.[$name]' config.json
