@@ -3,7 +3,7 @@ name: called
 on:
   workflow_call:
     # complied with the caller.yml
-    
+
     inputs:
       bg:
         type: string
@@ -13,11 +13,10 @@ on:
         required: true
 
 jobs:
-  called:
+  called-job:
     runs-on: ubuntu-latest
+    
     steps:
-      - name: checkout
-        uses: actions/checkout@v4.1.6
 
       - name: echo
         run: |

@@ -5,15 +5,14 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
 jobs:
-    caller:
-        runs-on: ubuntu-latest
-        steps:
-        - name: checkout
-          uses: actions/checkout@v4.1.6
-    
-        - name: call
-          uses: ./.github/workflows/called.yml@main
-          with:
-            bg: 'foo'
-            env: 'bar'
+    caller-job:
+      uses: nk1752/called-caller/.github/workflows/called.yml@main
+      with:
+        bg: 'foo'
+        env: 'bar'
