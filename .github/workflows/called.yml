@@ -2,6 +2,8 @@ name: called
 
 on:
   workflow_call:
+    # complied with the caller.yml
+    
     inputs:
       bg:
         type: string
