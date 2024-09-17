@@ -1,10 +1,14 @@
 {
     "accounts-dev":
         {
-            "operation": "renew"
+            "oper": "renew"
         },
     "accounts-qa":
         {
-            "operation": "register"
+            "oper": "register"
+        },
+    "mbanking-qa":
+        {
+            "oper": "bypass"
         }
 }

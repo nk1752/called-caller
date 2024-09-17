@@ -37,7 +37,7 @@ jobs:
             echo "key: $key"
             if [[ $key != "" ]]; then
               echo "flex name: $key"
-              operation=$(jq --arg key "$key" '.[$key].operation' config.json)
+              operation=$(jq --arg key "$key" '.[$key].oper' config.json)
               echo "operation: $operation"
               # break
             fi
