@@ -39,6 +39,6 @@ jobs:
               echo "flex name: $key"
               operation=$(jq --arg key "$key" '.[$key].operation' config.json)
               echo "operation: $operation"
-              break
+              # break
             fi
           done
