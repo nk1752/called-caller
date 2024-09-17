@@ -32,18 +32,13 @@ jobs:
 
       - name: search
         run: |
-          echo "searching for ${{ inputs.bg }}-${{ inputs.env }}"
-          name=${{ inputs.bg }}-${{ inputs.env }}
-          renew=$(jq --arg name "$name" '.[$name].renew' config.json)
-          echo "renew: $renew"
-          
           # iterate over the config.json elements
           for key in $(jq -r 'keys[]' config.json); do
             echo "key: $key"
-            if [[ $key == $name ]]; then
-              echo "found $key"
-              renew2=$(jq --arg key "$key" '.[$key].renew' config.json)
-              echo "renew2: $renew2"
+            if [[ $key != "" ]]; then
+              echo "flex name: $key"
+              operation=$(jq --arg key "$key" '.[$key].operation' config.json)
+              echo "operation: $operation"
               break
             fi
           done

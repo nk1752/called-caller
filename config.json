@@ -1,10 +1,10 @@
 {
     "accounts-dev":
         {
-            "renew": false
+            "operation": "renew"
         },
     "accounts-qa":
         {
-            "renew": true
+            "operation": "register"
         }
 }
