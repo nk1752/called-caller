@@ -12,7 +12,7 @@ permissions:
 
 jobs:
     caller-job1:
-      uses: nk1752/called-caller/.github/workflows/called.yml@main
+      uses: nk1752/called-caller/.github/workflows/create-reg.yml@main
       with:
         bg: 'accounts'
         env: 'dev'

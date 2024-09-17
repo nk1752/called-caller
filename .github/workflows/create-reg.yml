@@ -1,4 +1,4 @@
-name: called
+name: create registration
 
 on:
   workflow_call:
