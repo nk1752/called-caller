@@ -34,5 +34,5 @@ jobs:
         run: |
           echo "searching for ${{ inputs.bg }}-${{ inputs.env }}"
           name=${{ inputs.bg }}-${{ inputs.env }}
-          renew=$(jq name "$name" '.[$name].renew' config.json)
+          renew=$(jq --arg name "$name" '.[$name].renew' config.json)
           echo "renew: $renew"
