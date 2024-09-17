@@ -5,6 +5,6 @@
         },
     "accounts-qa":
         {
-            "renew": false
+            "renew": true
         }
 }
