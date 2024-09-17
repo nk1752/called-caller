@@ -1,12 +1,10 @@
 {
     "accounts-dev":
         {
-            "bg": "accounts",
-            "env": "dev"
+            "renew": false
         },
     "accounts-qa":
         {
-            "bg": "accounts",
-            "env": "qa"
+            "renew": false
         }
 }
