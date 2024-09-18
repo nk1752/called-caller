@@ -62,7 +62,7 @@ jobs:
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
             
-            if [[ $key == ${{inputs.flex-name}} ]]
+            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
               echo "register ${{inputs.flex-name}}"
               echo "oper=$key" >> GITHUB_OUTPUT
