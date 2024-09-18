@@ -30,6 +30,32 @@ jobs:
           echo "reading config"
           jq . config.json
 
+      # Set up BuildKit Docker container builder to be able to build
+      # multi-platform images and export cache
+      # https://github.com/docker/setup-buildx-action
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
+
+      - name: pull image
+        run: |
+          docker pull mulesoft/flex-gateway:latest
+
+      # list docker images
+      - name: list docker images
+        run: |
+          docker images
+
+      # check os version on ubuntu
+      - name: check os version
+        run: |
+          cat /etc/os-release
+
+      - name: make directory
+        run: |
+          mkdir -p temp
+          mkdir -p renew
+          ls -l
+
       - name: search
         id: search
         run: |
@@ -45,6 +71,18 @@ jobs:
             if [[ $oper == "register" ]]
             then  
               echo "registering..."
+
+              sudo docker run --entrypoint flexctl \
+                -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
+                registration create \
+                --client-id=b95726291f564ae2942ac2c4ecc46311 \
+                --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+                --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+                --connected=true \
+                --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+                --output-directory=/registration \
+                $key
+
             elif [[ $oper == "renew" ]]
             then  
               echo "renewing..."
