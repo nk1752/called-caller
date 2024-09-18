@@ -38,18 +38,21 @@ jobs:
             echo "key: $key"
             oper=$(jq --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
+            
             if [[ $oper == "register" ]]; then
-              echo "registering..."
-            else if [[ $oper == "renew" ]]; then
-              echo "renewing..."
-            else
-              echo "operation not found. skipping..."
               
+              echo "registering..."
+            
+            elif [[ $oper == "renew" ]]; then
+              
+              echo "renewing..."
+
+            else
+              
+              echo "operation not found. skipping..."
+
+            fi  
               # break
-            fi
           done # end of for loop
 
-      - name: register
-        if: ${{ env.oper}} == 'true'
-        run: |
-          echo "registered! $oper"
+      
