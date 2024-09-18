@@ -98,12 +98,12 @@ jobs:
             $key
 
       - name: renew register
-        if: steps.search.outputs.oper == 'renew'
+        if: ${{steps.search.outputs.oper}} == 'renew'
         run: |
           echo "renewing..."
 
       - name: print registration.yaml
-        if: steps.search.outputs.oper == 'register'
+        if: ${{steps.search.outputs.oper}} == 'register'
         run: |
           ls -l
           cat ./temp/registration.yaml
