@@ -48,6 +48,7 @@ jobs:
       - name: make temp directory
         run: |
           mkdir -p temp
+          mkdir -p temp2
           ls -l
 
       - name: search
@@ -60,13 +61,24 @@ jobs:
             echo "*************************"
 
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
-            echo "operation found: $oper"
+            echo "testing ${{inputs.flex-name}} && $oper"
             
             if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
-              echo "register ${{inputs.flex-name}}"
+              echo "found match! register ${{inputs.flex-name}}"
               echo "oper=$oper" >> GITHUB_OUTPUT
               echo "flex-name=$key" >> GITHUB_OUTPUT
+
+              sudo docker run --entrypoint flexctl \
+                -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
+                registration create \
+                --client-id=b95726291f564ae2942ac2c4ecc46311 \
+                --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+                --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+                --connected=true \
+                --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+                --output-directory=/registration \
+                $flex-name
 
               break
             elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
@@ -78,7 +90,7 @@ jobs:
               break
             else
               echo "${{inputs.flex-name}} for operation $oper skipping..."
-              echo "oper=none" >> GITHUB_OUTPUT
+              
               
             fi  
               # break
@@ -89,29 +101,6 @@ jobs:
           cat GITHUB_OUTPUT
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
-
-      - name: register
-        if: ${{steps.search.outputs.oper}} == 'wait'
-        run: |
-          echo "registering..."
-
-          flex-name=${{ steps.search.outputs.flex-name }}
-
-          sudo docker run --entrypoint flexctl \
-            -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
-            registration create \
-            --client-id=b95726291f564ae2942ac2c4ecc46311 \
-            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
-            --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
-            --connected=true \
-            --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
-            --output-directory=/registration \
-            $flex-name
-
-      - name: renew register
-        if: ${{steps.search.outputs.oper}} == 'renew'
-        run: |
-          echo "renewing..."
 
       - name: print registration.yaml
         if: ${{steps.search.outputs.oper}} == 'register'
