@@ -39,13 +39,13 @@ jobs:
             echo "key: $key"
             echo "*************************"
 
-            oper=$(jq --arg key "$key" '.[$key].oper' config.json)
+            oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
             
-            if [[ $oper == 1 ]]
+            if [[ $oper == "register" ]]
             then  
               echo "registering..."
-            elif [[ $oper == 2 ]]
+            elif [[ $oper == "renew" ]]
             then  
               echo "renewing..."
             else
