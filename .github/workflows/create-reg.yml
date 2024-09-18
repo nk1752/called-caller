@@ -13,7 +13,7 @@ on:
         required: true
 
 jobs:
-  called-job:
+  register-renew:
     runs-on: ubuntu-latest
     
     steps:
@@ -31,14 +31,22 @@ jobs:
           jq . config.json
 
       - name: search
+        id: search
         run: |
           # iterate over the config.json elements
           for key in $(jq -r 'keys[]' config.json); do
             echo "key: $key"
-            if [[ $key != "" ]]; then
-              echo "flex name: $key"
-              operation=$(jq --arg key "$key" '.[$key].oper' config.json)
-              echo "operation: $operation"
+            oper=$(jq --arg key "$key" '.[$key].oper' config.json)
+            echo "operation: $oper"
+            if [[ $oper != "register" ]]; then
+              echo "registering..."
+              echo "::set-output name=register::true"
+              
               # break
             fi
           done
+
+      - name: register
+        if: steps.search.outputs.register == 'true'
+        run: |
+          echo "registered! $oper"
