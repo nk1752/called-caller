@@ -12,6 +12,6 @@ permissions:
 
 jobs:
     caller-job1:
-      uses: nk1752/called-caller/.github/workflows/create-reg.yml@main
+      uses: ./.github/workflows/create-reg.yml
       with:
         flex-name: "accounts-dev"
