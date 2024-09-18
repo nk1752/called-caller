@@ -99,8 +99,8 @@ jobs:
       - name: check variables
         run: |
           cat GITHUB_OUTPUT
-          echo "oper=$oper"
-          echo "flex-name=$flex-name"
+          echo "oper=${{steps.search.outputs.oper}}"
+          echo "flex-name=${{steps.search.outputs.flex-name}}"
 
       - name: print registration.yaml
         if: ${{steps.search.outputs.oper}} == 'register'
