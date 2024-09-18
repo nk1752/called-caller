@@ -84,10 +84,18 @@ jobs:
               # break
           done # end of for loop
 
+      - name: check variables
+        run: |
+          cat GITHUB_OUTPUT
+          echo "oper=${{steps.search.outputs.oper}}"
+          echo "flex-name=${{steps.search.outputs.flex-name}}"
+
       - name: register
-        if: ${{steps.search.outputs.oper}} == 'register'
+        if: ${{steps.search.outputs.oper}} == 'wait'
         run: |
           echo "registering..."
+
+          flex-name=${{ steps.search.outputs.flex-name }}
 
           sudo docker run --entrypoint flexctl \
             -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
@@ -98,7 +106,7 @@ jobs:
             --connected=true \
             --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
             --output-directory=/registration \
-            ${{ steps.search.outputs.flex-name }}
+            $flex-name
 
       - name: renew register
         if: ${{steps.search.outputs.oper}} == 'renew'
