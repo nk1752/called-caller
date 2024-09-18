@@ -45,6 +45,11 @@ jobs:
         run: |
           cat /etc/os-release
 
+      - name: make temp directory
+        run: |
+          mkdir -p temp
+          ls -l
+
       - name: search
         id: search
         run: |
@@ -54,32 +59,18 @@ jobs:
             echo "key: $key"
             echo "*************************"
 
-            echo "creating directory: $key"
-            mkdir -p $key
-            ls -l
-
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
             
-            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
+            if [[ $key == ${{inputs.flex-name}} ]]
             then  
-              echo "registering..."
-              sudo docker run --entrypoint flexctl \
-                -v "$(pwd)/$key":/registration -u $UID mulesoft/flex-gateway \
-                registration create \
-                --client-id=b95726291f564ae2942ac2c4ecc46311 \
-                --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
-                --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
-                --connected=true \
-                --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
-                --output-directory=/registration \
-                $key
-
-                cat $key/registration.json
+              echo "register ${{inputs.flex-name}}"
+              echo "oper=$key" >> GITHUB_OUTPUT
 
             elif [[ ${{inputs.flex-name}} && $oper == "renew" ]]
             then  
-              echo "renewing..."
+              echo "renew registration ${{inputs.flex-name}}"
+              echo "oper=$key" >> GITHUB_OUTPUT
             else
               echo "${{inputs.flex-name}} for operation $oper skipping..."
             fi  
@@ -101,3 +92,14 @@ jobs:
             --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
             --output-directory=/registration \
             $key
+
+      - name: print registration.yaml
+        if: steps.search.outputs.oper == 'register'
+        run: |
+          ls -l
+          cat ./temp/registration.yaml
+          
+      - name: cleanup
+        run: |
+          echo "cleaning up..."
+          
