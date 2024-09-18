@@ -3,6 +3,10 @@
         {
             "oper": "renew"
         },
+    "accounts-test":
+        {
+            "oper": "register"
+        },
     "accounts-qa":
         {
             "oper": "register"
