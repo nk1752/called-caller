@@ -83,8 +83,9 @@ jobs:
                 --output-directory=/registration \
                 $key
 
-                yq . temp/register.yaml
-                rm -rf temp/register.yaml
+                ls -l
+                cat ./temp/registration.yaml
+                rm -rf ./temp/register.yaml
 
             elif [[ $oper == "renew" ]]
             then  
