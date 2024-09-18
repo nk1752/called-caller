@@ -35,22 +35,19 @@ jobs:
         run: |
           # iterate over the config.json elements
           for key in $(jq -r 'keys[]' config.json); do
-            echo "key: $key\n"
+            echo "key: $key"
+            echo "*************************"
             oper=$(jq --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
             
-            if [[ $oper == "register" ]]; then
-              
+            if [[ $oper == "register" ]]
+            then  
               echo "registering..."
-            
-            elif [[ $oper == "renew" ]]; then
-              
+            elif [[ $oper == "renew" ]]
+            then  
               echo "renewing..."
-
             else
-              
               echo "operation $oper skipping..."
-
             fi  
               # break
           done # end of for loop
