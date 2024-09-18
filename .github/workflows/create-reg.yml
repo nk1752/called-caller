@@ -40,10 +40,10 @@ jobs:
             oper=$(jq --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
             
-            if [[ $oper == "register" ]]
+            if [[ $oper == 'register' ]]
             then  
               echo "registering..."
-            elif [[ $oper == "renew" ]]
+            elif [[ "$oper" == "renew" ]]
             then  
               echo "renewing..."
             else
