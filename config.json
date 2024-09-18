@@ -1,11 +1,11 @@
 {
     "accounts-dev":
         {
-            "oper": "renew"
+            "oper": "bypass"
         },
     "accounts-test":
         {
-            "oper": "register"
+            "oper": "bypass"
         },
     "accounts-qa":
         {

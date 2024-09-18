@@ -10,9 +10,8 @@ on:
 jobs:
   register-renew:
     runs-on: ubuntu-latest
-    
-    steps:
 
+    steps:
       - name: echo
         run: |
           echo "caller send: ${{ inputs.flex-name }}"
@@ -69,16 +68,7 @@ jobs:
               echo "oper=$oper" >> GITHUB_OUTPUT
               echo "flex-name=$key" >> GITHUB_OUTPUT
 
-              sudo docker run --entrypoint flexctl \
-                -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
-                registration create \
-                --client-id=b95726291f564ae2942ac2c4ecc46311 \
-                --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
-                --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
-                --connected=true \
-                --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
-                --output-directory=/registration \
-                $key
+              
 
               break
             elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
@@ -105,10 +95,13 @@ jobs:
       - name: print registration.yaml
         if: ${{steps.search.outputs.oper}} == 'register'
         run: |
-          ls -l
-          cat ./temp/registration.yaml
-          
+          echo "printing registration.yaml"
+
+      - name: print renew registration.yaml
+        if: ${{steps.search.outputs.oper}} == 'renew'
+        run: |
+          echo "printing renew registration.yaml"
+
       - name: cleanup
         run: |
           echo "cleaning up..."
-          
