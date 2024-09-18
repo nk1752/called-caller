@@ -65,17 +65,18 @@ jobs:
             if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
               echo "register ${{inputs.flex-name}}"
-              echo "oper=$key" >> GITHUB_OUTPUT
+              echo "oper=$oper" >> GITHUB_OUTPUT
 
               break
             elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
             then  
               echo "renew registration ${{inputs.flex-name}}"
-              echo "oper=$key" >> GITHUB_OUTPUT
+              echo "oper=$oper" >> GITHUB_OUTPUT
 
               break
             else
               echo "${{inputs.flex-name}} for operation $oper skipping..."
+              echo "oper=none" >> GITHUB_OUTPUT
             fi  
               # break
           done # end of for loop
