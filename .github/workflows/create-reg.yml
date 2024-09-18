@@ -82,7 +82,7 @@ jobs:
           done # end of for loop
 
       - name: register
-        if: steps.search.outputs.oper == 'register'
+        if: ${{steps.search.outputs.oper}} == 'register'
         run: |
           echo "registering..."
 
