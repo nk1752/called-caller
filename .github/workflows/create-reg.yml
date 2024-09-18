@@ -83,6 +83,7 @@ jobs:
 
                 ls -l
                 cat ./$key/registration.yaml
+                chmod 777 ./$key/registration.yaml
                 rm -rf ./$key/register.yaml
 
             elif [[ $oper == "renew" ]]
