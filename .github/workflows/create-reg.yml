@@ -78,7 +78,7 @@ jobs:
                 --connected=true \
                 --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
                 --output-directory=/registration \
-                $flex-name
+                $key
 
               break
             elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
