@@ -55,7 +55,7 @@ jobs:
           mkdir -p $flex_key
           ls -l
           
-          flex_name=$(jq -r --arg flex_key $flex_key .[flex_key] config.json)
+          flex_name=$(jq -r --arg flex_key "$flex_key" .[flex_key] config.json)
 
           oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
           echo "operation found: $oper"
