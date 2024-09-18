@@ -37,16 +37,19 @@ jobs:
           for key in $(jq -r 'keys[]' config.json); do
             echo "key: $key"
             oper=$(jq --arg key "$key" '.[$key].oper' config.json)
-            echo "operation: $oper"
-            if [[ $oper != "register" ]]; then
+            echo "operation found: $oper"
+            if [[ $oper == "register" ]]; then
               echo "registering..."
-              echo "::set-output name=register::true"
+            else if [[ $oper == "renew" ]]; then
+              echo "renewing..."
+            else
+              echo "operation not found. skipping..."
               
               # break
             fi
-          done
+          done # end of for loop
 
       - name: register
-        if: steps.search.outputs.register == 'true'
+        if: ${{ env.oper}} == 'true'
         run: |
           echo "registered! $oper"
