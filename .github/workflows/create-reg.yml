@@ -48,43 +48,56 @@ jobs:
       - name: search
         id: search
         run: |
-          # search for element in config.json elements
-          flex_key=${{ inputs.flex-name }}
-          
-          echo "creating directory: $flex_key"
-          mkdir -p $flex_key
-          ls -l
-          
-          flex_name=$(jq -r --arg flex_key "$flex_key" .[flex_key] config.json)
+          # iterate over the config.json elements
+          for key in $(jq -r 'keys[]' config.json); do
+            echo "*************************"
+            echo "key: $key"
+            echo "*************************"
 
-          oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
-          echo "operation found: $oper"
+            echo "creating directory: $key"
+            mkdir -p $key
+            ls -l
+
+            oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
+            echo "operation found: $oper"
             
-          if [[ $oper == "register" ]]
-          then  
-            echo "registering..."
+            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
+            then  
+              echo "registering..."
+              sudo docker run --entrypoint flexctl \
+                -v "$(pwd)/$key":/registration -u $UID mulesoft/flex-gateway \
+                registration create \
+                --client-id=b95726291f564ae2942ac2c4ecc46311 \
+                --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+                --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+                --connected=true \
+                --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+                --output-directory=/registration \
+                $key
 
-            sudo docker run --entrypoint flexctl \
-              -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
-              registration create \
-              --client-id=b95726291f564ae2942ac2c4ecc46311 \
-              --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
-              --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
-              --connected=true \
-              --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
-              --output-directory=/registration \
-              $flex_name
+                cat $key/registration.json
 
-              ls -l
-              cat ./$key/registration.yaml
-              
+            elif [[ ${{inputs.flex-name}} && $oper == "renew" ]]
+            then  
+              echo "renewing..."
+            else
+              echo "${{inputs.flex-name}} for operation $oper skipping..."
+            fi  
+              break
+          done # end of for loop
 
-          elif [[ $oper == "renew" ]]
-          then  
-            echo "renewing..."
-          else
-            echo "operation $oper skipping..."
-          fi  
-          
+      - name: register
+        if: steps.search.outputs.oper == 'register'
+        run: |
+          echo "registering..."
 
-      
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)/temp":/registration -u $UID mulesoft/flex-gateway \
+            registration create \
+            --client-id=b95726291f564ae2942ac2c4ecc46311 \
+            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+            --connected=true \
+            --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+            --output-directory=/registration \
+            $key
