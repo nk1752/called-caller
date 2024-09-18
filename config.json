@@ -9,7 +9,7 @@
         },
     "accounts-qa":
         {
-            "oper": "register"
+            "oper": "bypass"
         },
     "mbanking-qa":
         {

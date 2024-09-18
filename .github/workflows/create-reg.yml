@@ -50,12 +50,6 @@ jobs:
         run: |
           cat /etc/os-release
 
-      - name: make directory
-        run: |
-          mkdir -p temp
-          mkdir -p renew
-          ls -l
-
       - name: search
         id: search
         run: |
@@ -64,6 +58,10 @@ jobs:
             echo "*************************"
             echo "key: $key"
             echo "*************************"
+
+            echo "creating directory: $key"
+            mkdir -p $key
+            ls -l
 
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
             echo "operation found: $oper"
@@ -84,8 +82,8 @@ jobs:
                 $key
 
                 ls -l
-                cat ./temp/registration.yaml
-                rm -rf ./temp/register.yaml
+                cat ./$key/registration.yaml
+                rm -rf ./$key/register.yaml
 
             elif [[ $oper == "renew" ]]
             then  
