@@ -92,7 +92,7 @@ jobs:
           else
             echo "GITHUB_OUTPUT file not found"
           fi
-          cat GITHUB_OUTPUT
+          
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
 
