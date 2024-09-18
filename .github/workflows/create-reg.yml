@@ -65,15 +65,15 @@ jobs:
             if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
               echo "found match! $oper ${{inputs.flex-name}}"
-              echo "oper=$oper" >> GITHUB_OUTPUT
-              echo "flex-name=$key" >> GITHUB_OUTPUT
+              echo "oper=$oper" >> GITHUB_ENV
+              echo "flex-name=$key" >> GITHUB_ENV
 
               break
             elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
             then  
               echo "found match! $oper ${{inputs.flex-name}}"
-              echo "oper=$oper" >> GITHUB_OUTPUT
-              echo "flex-name=$key" >> GITHUB_OUTPUT
+              echo "oper=$oper" >> GITHUB_ENV
+              echo "flex-name=$key" >> GITHUB_ENV
 
               break
             else
@@ -96,15 +96,9 @@ jobs:
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
 
-      - name: print registration.yaml
-        if: ${{steps.search.outputs.oper}} == 'register'
-        run: |
-          echo "printing registration.yaml"
+          echo "oper=$oper"
+          echo "flex-name=$flex-name"
 
-      - name: print renew registration.yaml
-        if: ${{steps.search.outputs.oper}} == 'renew'
-        run: |
-          echo "printing renew registration.yaml"
 
       - name: cleanup
         run: |
