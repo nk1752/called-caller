@@ -50,38 +50,37 @@ jobs:
           mkdir -p temp2
           ls -l
 
-      - name: wow
-        run: |
-          echo "wow"
-
-          echo jq -r '.[] | .oper' config.json > config2.json
-          jq . config2.json
-
       - name: search
         id: search
         run: |
-          # iterate over the config.json elements in unsorted order
-          for key in $(jq -r 'keys[]' config2.json); do
-
+          # iterate over the config.json elements
+          for key in $(jq -r 'keys[]' config.json); do
             echo "*************************"
             echo "key: $key"
             echo "*************************"
 
-            oper=$(jq -r --arg key "$key" '.[$key].oper' config2.json)
-
-            echo "testing $key:$oper"
+            oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
+            echo "testing ${{inputs.flex-name}} && $oper"
             
-            if [[ $oper == "register" || $oper == "renew" ]]
+            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
-              echo "found match! $oper for $key"
+              echo "found match! $oper ${{inputs.flex-name}}"
               echo "oper=$oper" >> $GITHUB_OUTPUT
               echo "flex-name=$key" >> $GITHUB_OUTPUT
 
               break
-            fi
-            
-            echo "skipping $key..."
+            elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
+            then  
+              echo "found match! $oper ${{inputs.flex-name}}"
+              echo "oper=$oper" >> $GITHUB_OUTPUT
+              echo "flex-name=$key" >> $GITHUB_OUTPUT
 
+              break
+            else
+              echo "${{inputs.flex-name}} for operation $oper skipping..."
+              
+              
+            fi  
               # break
           done # end of for loop
 
