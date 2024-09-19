@@ -54,7 +54,12 @@ jobs:
         run: |
           echo "wow"
 
-          jq -r '.[] | [$keys]' config.json
+          while [ $(jq -r '.[] | .oper' config.json) == "register" ]; do
+            echo "wow"
+            sleep 5
+          done
+
+          
 
       - name: search
         id: search
