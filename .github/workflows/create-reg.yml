@@ -54,7 +54,7 @@ jobs:
         id: search
         run: |
           # iterate over the config.json elements
-          for key in $(jq -r 'keys[] | keys_unsorted' config.json); do
+          for key in $(jq -r '.[]' config.json); do
 
             echo "*************************"
             echo "key: $key"
