@@ -86,13 +86,20 @@ jobs:
 
       - name: check variables
         run: |
-          if [ -f GITHUB_OUTPUT ]
-          then
-            cat GITHUB_OUTPUT
-          else
-            echo "GITHUB_OUTPUT file not found"
-          fi
-          
+          echo "oper=${{steps.search.outputs.oper}}"
+          echo "flex-name=${{steps.search.outputs.flex-name}}"
+
+      - name: print register
+        if: ${{steps.search.outputs.oper}} == 'register'
+        run: |
+          echo "registering..."
+          echo "oper=${{steps.search.outputs.oper}}"
+          echo "flex-name=${{steps.search.outputs.flex-name}}"
+
+      - name: renew register
+        if: ${{steps.search.outputs.oper}} == 'renew'
+        run: |
+          echo "renewing..."
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
 
