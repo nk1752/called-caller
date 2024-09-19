@@ -53,7 +53,7 @@ jobs:
       - name: wow
         run: |
           echo "wow"
-          echo "config.json" | jq -r '.[] | select(.oper == "register" or .oper == "renew")'
+          echo "config.json" | jq -r '.[] | select(.oper == "register" || .oper == "renew")'
 
       - name: search
         id: search
