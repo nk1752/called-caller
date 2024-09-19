@@ -50,6 +50,11 @@ jobs:
           mkdir -p temp2
           ls -l
 
+      - name: wow
+        run: |
+          echo "wow"
+          echo "config.json" | jq -r '.[] | select(.oper == "register" or .oper == "renew")'
+
       - name: search
         id: search
         run: |
