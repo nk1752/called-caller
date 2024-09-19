@@ -86,18 +86,21 @@ jobs:
 
       - name: check variables
         run: |
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.flex-name}}"
+          oper=${{steps.search.outputs.oper}}
+          flex-name=${{steps.search.outputs.flex-name}}
+
+          echo "oper=$oper"
+          echo "flex-name=$flex-name"
 
       - name: print register
-        if: ${{steps.search.outputs.oper}} == 'register'
+        if: ${{steps.search.outputs.oper}} == "register"
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
 
       - name: renew register
-        if: ${{steps.search.outputs.oper}} == 'renew'
+        if: ${{steps.search.outputs.oper}} == "renew"
         run: |
           echo "renewing..."
           echo "oper=${{steps.search.outputs.oper}}"
