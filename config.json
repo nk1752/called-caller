@@ -5,7 +5,7 @@
         },
     "accounts-test":
         {
-            "oper": "bypass"
+            "oper": "register"
         },
     "accounts-qa":
         {
@@ -13,6 +13,6 @@
         },
     "mbanking-qa":
         {
-            "oper": "bypass"
+            "oper": "renew"
         }
 }

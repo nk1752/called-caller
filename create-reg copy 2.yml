@@ -62,14 +62,14 @@ jobs:
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
             echo "testing ${{inputs.flex-name}} && $oper"
             
-            if [[ $oper == "register" ]]
+            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
             then  
               echo "found match! $oper ${{inputs.flex-name}}"
               echo "oper=$oper" >> $GITHUB_OUTPUT
               echo "flex-name=$key" >> $GITHUB_OUTPUT
 
               break
-            elif [[ $oper == "renew" ]]
+            elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
             then  
               echo "found match! $oper ${{inputs.flex-name}}"
               echo "oper=$oper" >> $GITHUB_OUTPUT
@@ -77,7 +77,8 @@ jobs:
 
               break
             else
-              echo "skipping ${{inputs.flex-name}}..."
+              echo "${{inputs.flex-name}} for operation $oper skipping..."
+              
               
             fi  
               # break
