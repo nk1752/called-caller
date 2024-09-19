@@ -50,11 +50,17 @@ jobs:
           mkdir -p temp2
           ls -l
 
+      - name: wow
+        run: |
+          echo "wow"
+
+          jq -r '.[] | .oper' config.json
+
       - name: search
         id: search
         run: |
           # iterate over the config.json elements in unsorted order
-          for key in $(jq -r '.keys[]' config.json); do
+          for key in $(jq -r '.[$keys]' config.json); do
 
             echo "*************************"
             echo "key: $key"
