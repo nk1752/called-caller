@@ -54,13 +54,13 @@ jobs:
         run: |
           echo "wow"
 
-          jq -r '.[] | .oper' config.json
+          jq -r '.[] | [$keys]' config.json
 
       - name: search
         id: search
         run: |
           # iterate over the config.json elements in unsorted order
-          for key in $(jq -r '.[$keys_unsorted]' config.json); do
+          for key in $(jq -r '.[]' config.json); do
 
             echo "*************************"
             echo "key: $key"
