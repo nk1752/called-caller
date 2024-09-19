@@ -54,12 +54,14 @@ jobs:
         id: search
         run: |
           # iterate over the config.json elements
-          for key in $(jq -r 'keys[]' config.json); do
+          for key in $(jq -r 'keys[] | keys_unsorted' config.json); do
+
             echo "*************************"
             echo "key: $key"
             echo "*************************"
 
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
+
             echo "testing $key:$oper"
             
             if [[ $oper == "register" || $oper == "renew" ]]
