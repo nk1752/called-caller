@@ -54,18 +54,13 @@ jobs:
         run: |
           echo "wow"
 
-          while [ $(jq -r '.[] | .oper' config.json) == "register" ]; do
-            echo "wow"
-            sleep 5
-          done
-
-          
+          echo jq -r '.[] | .oper' config.json > config2.json
 
       - name: search
         id: search
         run: |
           # iterate over the config.json elements in unsorted order
-          for key in $(jq -r '.[]' config.json); do
+          for key in $(jq -r '.[keys]' config2.json); do
 
             echo "*************************"
             echo "key: $key"
