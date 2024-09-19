@@ -1,7 +1,7 @@
 {
     "accounts-dev":
         {
-            "oper": "bypass"
+            "oper": "register"
         },
     "accounts-test":
         {
