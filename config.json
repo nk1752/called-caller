@@ -1,18 +1,14 @@
 {
-    "accounts-dev":
-        {
-            "oper": "bypass"
-        },
-    "accounts-test":
-        {
-            "oper": "register"
-        },
-    "accounts-qa":
-        {
-            "oper": "register"
-        },
-    "mbanking-qa":
-        {
-            "oper": "renew"
-        }
+  "accounts-dev": {
+    "oper": "bypass"
+  },
+  "accounts-test": {
+    "oper": "register"
+  },
+  "accounts-qa": {
+    "oper": "register"
+  },
+  "mbanking-qa": {
+    "oper": "renew"
+  }
 }
