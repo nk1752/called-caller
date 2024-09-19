@@ -86,27 +86,33 @@ jobs:
 
       - name: check variables
         run: |
-          oper=${{steps.search.outputs.oper}}
-          flex-name=${{steps.search.outputs.flex-name}}
-
-          echo "oper=$oper"
-          echo "flex-name=$flex-name"
-
-      - name: print register
-        if: ${{steps.search.outputs.oper}} == "register"
-        run: |
-          echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
           echo "flex-name=${{steps.search.outputs.flex-name}}"
 
+      - name: print register 
+        run: |
+          echo "test for registration"
+          if [[ ${{steps.search.outputs.oper}} == "register" ]]
+          then
+            echo "registering..."
+            echo "oper=${{steps.search.outputs.oper}}"
+            echo "flex-name=${{steps.search.outputs.flex-name}}"
+          else
+            echo "no registration found"
+          fi
+          
       - name: renew register
-        if: ${{steps.search.outputs.oper}} == "renew"
         run: |
-          echo "renewing..."
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.flex-name}}"
-
-
+          echo "test for renew registration"
+          if [[ ${{steps.search.outputs.oper}} == "renew" ]]
+          then
+            echo "renewing..."
+            echo "oper=${{steps.search.outputs.oper}}"
+            echo "flex-name=${{steps.search.outputs.flex-name}}"
+          else
+            echo "no registration to renew"
+          fi
+          
       - name: cleanup
         run: |
           echo "cleaning up..."
