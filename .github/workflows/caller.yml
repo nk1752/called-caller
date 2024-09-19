@@ -11,7 +11,7 @@ permissions:
   id-token: write
 
 jobs:
-    caller-job1:
+    registration-job1:
       uses: ./.github/workflows/create-reg.yml
       with:
         flex-name: "accounts-dev"
