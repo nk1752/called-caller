@@ -1,0 +1,29 @@
+name: json testing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+env:
+  flex-name: "accounts-test"
+
+jobs:
+  json-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echo
+        run: |
+          echo "caller send: ${{ env.flex-name }}"
+
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: read config
+        run: |
+          echo "reading config"
+          jq . config.json
