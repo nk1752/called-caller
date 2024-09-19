@@ -60,18 +60,18 @@ jobs:
             echo "*************************"
 
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
-            echo "testing ${{inputs.flex-name}} && $oper"
+            echo "testing $key:$oper"
             
             if [[ $oper == "register" || $oper == "renew" ]]
             then  
-              echo "found match! $oper for ${{inputs.flex-name}}"
+              echo "found match! $oper for $key"
               echo "oper=$oper" >> $GITHUB_OUTPUT
               echo "flex-name=$key" >> $GITHUB_OUTPUT
 
               break
             fi
             
-            echo "skipping ${{inputs.flex-name}}..."
+            echo "skipping $key..."
 
               # break
           done # end of for loop
