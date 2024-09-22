@@ -110,14 +110,6 @@ jobs:
             "${{steps.search.outputs.fgw-name}}"
 
           cat registration.yaml
-
-          # commit the registration.yaml file to repo
-          git config user.email "nk1752@outlook.com"
-          git config user.name "Nadeem Khalid"
-          
-          git add registration.yaml
-          git commit -m "registration.yaml"
-          git push
           
           
       - name: check for renew 
@@ -126,7 +118,7 @@ jobs:
           echo "oper=${{steps.search.outputs.oper}}"
           echo fgw-name=${{steps.search.outputs.fgw-name}}
 
-          sudo docker exec -u $UID "${{steps.search.outputs.fgw-name}}" flexctl registration inspect
+          # sudo docker exec -u $UID "${{steps.search.outputs.fgw-name}}" flexctl registration inspect
 
           mkdir -p renew
           ls -l
