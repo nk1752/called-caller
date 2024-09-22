@@ -2,6 +2,9 @@ name: json testing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -9,7 +12,7 @@ permissions:
   id-token: write
 
 env:
-  flex-name: "accounts-test"
+  obj: "fgw1"
 
 jobs:
   json-test:
@@ -18,7 +21,7 @@ jobs:
     steps:
       - name: echo
         run: |
-          echo "caller send: ${{ env.flex-name }}"
+          echo "caller send: ${{ env.obj }}"
 
       - name: checkout
         uses: actions/checkout@v4.1.6
@@ -27,3 +30,41 @@ jobs:
         run: |
           echo "reading config"
           jq . config.json
+
+      - name: search
+        id: search
+        run: |
+          # iterate over the config.json elements
+          for key in $(jq -r 'keys[]' config.json); do
+            echo "*************************"
+            echo "key: $key"
+            echo "*************************"
+            
+            if [[ $key ==  ]]
+            then  
+              echo "found match! $oper ${{env.obj}}"
+
+              jq -r .$key.oper config.json
+
+              echo "oper=$(jq -r .$key.oper config.json)" >> $GITHUB_OUTPUT
+              echo "bg=$(jq -r .$key.bg config.json)" >> $GITHUB_OUTPUT
+              echo "env=$(jq -r .$key.env config.json)" >> $GITHUB_OUTPUT
+              echo "size=$(jq -r .$key.size config.json)" >> $GITHUB_OUTPUT
+              echo "no=$(jq -r .$key.no config.json)" >> $GITHUB_OUTPUT
+
+              break
+            else
+              echo "skipping --> ${{env.obj}}"
+              
+              
+            fi  
+              # break
+          done # end of for loop
+
+      - name: check variables
+        run: |
+          echo oper=${{steps.search.outputs.oper}}
+          echo bg=${{steps.search.outputs.bg}}
+          echo env=${{steps.search.outputs.env}}
+          echo size=${{steps.search.outputs.size}}
+          echo no=${{steps.search.outputs.no}}
