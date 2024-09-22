@@ -79,5 +79,7 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           
-          name=nadeem
+          name=nadeem-${{env.obj}}
           echo $name
+
+          
