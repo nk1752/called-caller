@@ -69,7 +69,7 @@ jobs:
 
             
           done # end of for loop
-
+        
       - name: check variables
         run: |
           echo oper=${{steps.search.outputs.oper}}
@@ -77,6 +77,6 @@ jobs:
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
-          # "$( ${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}} )"
+          
           flex-name="nadeem"
           echo $flex-name
