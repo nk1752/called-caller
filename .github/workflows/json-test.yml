@@ -54,15 +54,15 @@ jobs:
               
               # get the value of the key
               oper=$(jq -r ".$key.oper" config.json)
-              echo "oper: $oper" >> $GITHUB_OUTPUT
+              echo "oper=$oper" >> $GITHUB_OUTPUT
               bg=$(jq -r ".$key.bg" config.json)
-              echo "bg: $bg" >> $GITHUB_OUTPUT
+              echo "bg=$bg" >> $GITHUB_OUTPUT
               env=$(jq -r ".$key.env" config.json)
-              echo "env: $env" >> $GITHUB_OUTPUT
+              echo "env=$env" >> $GITHUB_OUTPUT
               size=$(jq -r ".$key.size" config.json)
-              echo "size: $size" >> $GITHUB_OUTPUT
+              echo "size=$size" >> $GITHUB_OUTPUT
               no=$(jq -r ".$key.no" config.json)
-              echo "no: $no" >> $GITHUB_OUTPUT
+              echo "no=$no" >> $GITHUB_OUTPUT
 
               break
             fi
