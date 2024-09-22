@@ -87,8 +87,11 @@ jobs:
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
+          echo fgw-name=${{steps.search.outputs.fgw-name}}
 
-          echo flex-name=${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
+          
+          name=fwg-${{steps.search.outputs.oper}}-${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
+          echo $name
               
       - name: check for register 
         if: ${{steps.search.outputs.oper == 'register'}}
