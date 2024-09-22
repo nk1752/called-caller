@@ -2,6 +2,9 @@ name: json testing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -27,6 +30,17 @@ jobs:
         run: |
           echo "reading config"
           jq . config.json
+
+      - name: bash vars
+        run: |
+          v1="fgw1"
+          echo "v1=$v1"
+          v2=fgw2
+          echo "v2=$v2"
+          v3=$v1-$v2
+          echo "v3=$v3"
+          v4=nk-$v1-$v2-$v3
+          echo "v4=$v4"
 
       - name: search
         id: search
