@@ -15,4 +15,4 @@ jobs:
     registration-job1:
       uses: ./.github/workflows/create-reg.yml
       with:
-        obj: "fgw1"
+        obj: "fgw3"

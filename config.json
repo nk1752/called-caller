@@ -14,9 +14,9 @@
     "no": "1"
   },
   "fgw3": {
-    "oper": "bypass",
-    "bg": "bg1",
-    "env": "env1",
+    "oper": "register",
+    "bg": "accounts",
+    "env": "qa",
     "size": "small",
     "no": "1"
   },

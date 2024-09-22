@@ -47,7 +47,7 @@ jobs:
       - name: make temp directory
         run: |
           mkdir -p temp
-          mkdir -p temp2
+          mkdir -p renew
           ls -l
 
       - name: search
@@ -74,10 +74,7 @@ jobs:
               break
             else
               echo "skipping --> ${{inputs.obj}}"
-              
-              
             fi  
-              # break
           done # end of for loop
 
       - name: check variables
@@ -88,26 +85,50 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           echo fgw-name=${{steps.search.outputs.fgw-name}}
-
           
-          name=fwg-${{steps.search.outputs.oper}}-${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
+          name=fwg-${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
           echo $name
               
       - name: check for register 
         if: ${{steps.search.outputs.oper == 'register'}}
         run: |
-          echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          
-          echo "fgw-name=$fgw-name"
+          echo fgw-name=${{steps.search.outputs.fgw-name}}
+
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)/flex-reg":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration create \
+            --client-id=b95726291f564ae2942ac2c4ecc46311 \
+            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+            --connected=true \
+            --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+            --output-directory=/registration \
+            ${{steps.search.outputs.fgw-name}} 
           
           
       - name: check for renew 
         if: ${{steps.search.outputs.oper == 'renew'}}
         run: |
-          echo "registering..."
-          echo "oper=${{steps.search.outputs.oper}}""
+          echo "oper=${{steps.search.outputs.oper}}"
+          echo fgw-name=${{steps.search.outputs.fgw-name}}
+
+          sudo docker exec -u $UID ${{steps.search.outputs.fgw-name}} flexctl registration inspect
+
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)/renew":/renew \
+            -v "$(ped)/temp":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration renew \
+            --client-id=b95726291f564ae2942ac2c4ecc46311 \
+            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --output-directory=/renew \
+            /registration/registration.yaml
           
       - name: cleanup
         run: |
           echo "cleaning up..."
+          rm -rf temp
+          rm -rf renew
+          ls -l

@@ -8,3 +8,15 @@ sudo docker run --entrypoint flexctl \
  --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
  --output-directory=/registration \
  nk-gateway
+
+docker run --entrypoint flexctl \
+-v "$(pwd)":/renew \
+-v <path-to-registration-directory>:/registration \
+-u $UID mulesoft/flex-gateway \
+registration renew \
+--client-id=<your-client-id> \
+--client-secret=<your-client-secret> \
+--output-directory=/renew \
+<path-to-registration-file-in-container>
+
+docker exec -u $UID <container-name-or-id> flexctl registration inspect
