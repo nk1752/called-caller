@@ -59,7 +59,7 @@ jobs:
             echo "key: $key"
             echo "*************************"
             
-            if [[ $key == ${{inputs.obj}} ]]
+            if [[ "$key" == ${{inputs.obj}} ]]
             then  
               echo "found match! $oper ${{inputs.obj}}"
 
@@ -87,13 +87,15 @@ jobs:
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
+
+          echo flex-name=${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
               
       - name: check for register 
         if: ${{steps.search.outputs.oper == 'register'}}
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          fgw-name=$(${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}})
+          
           echo "fgw-name=$fgw-name"
           
           
