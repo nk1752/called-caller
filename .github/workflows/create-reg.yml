@@ -110,6 +110,15 @@ jobs:
             "${{steps.search.outputs.fgw-name}}"
 
           cat registration.yaml
+
+
+      # inspect registration.yaml
+      - name: inspection
+        run: |
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration inspect --file=/registration/registration.yaml > reg-date.yaml
           
           
       - name: check for renew 
@@ -117,8 +126,6 @@ jobs:
         run: |
           echo "oper=${{steps.search.outputs.oper}}"
           echo fgw-name=${{steps.search.outputs.fgw-name}}
-
-          # sudo docker exec -u $UID "${{steps.search.outputs.fgw-name}}" flexctl registration inspect
 
           mkdir -p renew
           ls -l
@@ -132,6 +139,8 @@ jobs:
             --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
             --output-directory=/renew \
             /registration/registration.yaml
+
+            cat renew/registration.yaml
           
       - name: cleanup
         run: |
