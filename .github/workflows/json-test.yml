@@ -78,5 +78,5 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
 
-          flex-name=${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
+          flex-name="$( ${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}} )"
           echo "flex-name=$flex-name"
