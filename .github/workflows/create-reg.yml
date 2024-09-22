@@ -105,7 +105,7 @@ jobs:
             --connected=true \
             --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
             --output-directory=/registration \
-            ${{steps.search.outputs.fgw-name}} 
+            "${{steps.search.outputs.fgw-name}}"
           
           
       - name: check for renew 
@@ -114,7 +114,7 @@ jobs:
           echo "oper=${{steps.search.outputs.oper}}"
           echo fgw-name=${{steps.search.outputs.fgw-name}}
 
-          sudo docker exec -u $UID ${{steps.search.outputs.fgw-name}} flexctl registration inspect
+          sudo docker exec -u $UID "${{steps.search.outputs.fgw-name}}" flexctl registration inspect
 
           sudo docker run --entrypoint flexctl \
             -v "$(pwd)/renew":/renew \
