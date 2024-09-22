@@ -72,11 +72,12 @@ jobs:
         
       - name: check variables
         run: |
+          set -e
           echo oper=${{steps.search.outputs.oper}}
           echo bg=${{steps.search.outputs.bg}}
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           
-          flex-name=$("nadeem")
-          echo $flex-name
+          name=nadeem
+          echo $name
