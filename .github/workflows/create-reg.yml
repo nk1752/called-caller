@@ -93,7 +93,7 @@ jobs:
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          fgw-name=$(fgw-${{steps.search.outputs.gb}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}})
+          fgw-name="$(fgw-${{steps.search.outputs.gb}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}})"
           echo "fgw-name=$fgw-name"
           
           
