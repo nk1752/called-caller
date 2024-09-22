@@ -40,6 +40,9 @@ jobs:
             echo "key: $key"
             echo "*************************"
             
+            # get the value of the key
+            value=$(jq -r ".$key" config.json)
+            echo "value: $value"
             
           done # end of for loop
 
