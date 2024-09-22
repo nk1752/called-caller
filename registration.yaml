@@ -1,0 +1,27 @@
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: Configuration
+metadata:
+    name: registration
+spec:
+    platformConnection:
+        agentId: ec6dc9c6-36e6-454f-8818-5ea3da4168e0
+        region: us-east-1
+        certificateRef:
+            kind: Secret
+            name: flex-registration
+        assetName: fgw-accounts-qa-small-1
+        meteringSchemaId: f3a19cd9-edae-4cfa-8bf4-fb8ccf07b39c
+        anypoint: https://anypoint.mulesoft.com
+        arm: wss://arm-mcm2-service.kprod.msap.io/agent
+        events: https://anypoint.mulesoft.com/apiruntime/v1/events
+        logging: https://logging.ingestion.us-east-1.prod.cloudhub.io/ingestion/api/v1/logging
+        metering: https://metering.ingestion.us-east-1.prod.cloudhub.io/ingestion/api/v1/metering
+        monitoring: https://monitoring.ingestion.us-east-1.prod.cloudhub.io/ingestion/api/v1/monitoring
+---
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: Secret
+metadata:
+    name: flex-registration
+spec:
+    tls.crt: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUdJekNDQkF1Z0F3SUJBZ0lSQU5OMHNvUHI0enVzemJPR2pOY3E5UGt3RFFZSktvWklodmNOQVFFTEJRQXcKZ1lBeEN6QUpCZ05WQkFZVEFsVlRNUkV3RHdZRFZRUUtEQWhOZFd4bGMyOW1kREVRTUE0R0ExVUVDd3dIVFdkdApkRkJyYVRFVE1CRUdBMVVFQ0F3S1EyRnNhV1p2Y201cFlURWZNQjBHQTFVRUF3d1diWFZzWlMxaFoyVnVkQzFwClkyRXRkWE5sWVhOME1URVdNQlFHQTFVRUJ3d05VMkZ1SUVaeVlXNWphWE5qYnpBZUZ3MHlOREE1TWpJeU1EQXgKTlRsYUZ3MHlOVEE1TWpVeE9USTNOVGhhTUVFeFB6QTlCZ05WQkFNTU5tVmpObVJqT1dNMkxUTTJaVFl0TkRVMApaaTA0T0RFNExUVmxZVE5rWVRReE5qaGxNQzVTVWk1MWN5MWxZWE4wTFRFdWNISnZaRENDQVNJd0RRWUpLb1pJCmh2Y05BUUVCQlFBRGdnRVBBRENDQVFvQ2dnRUJBUE5tdjF3Z3F2OGFNKzR1V1hBQlN4WUxTOUplMy93b1J1V3YKTm5Td2hEMVpHK0kwRVZ5NnZsVFgzWURtaExOL2ZXclBBSXFMVC9YWGd6dDNraElmMXF3U2R1MDgvMVNjTlF4YQpkT2JuUnlFODcvMDRDUVdIblM1eWhGUGNQUFdjQU5sdGs4eXhZRjEvTnZMdUhZYkJhRXlMZ1lFcVVEZStYZllnCjRIUlJSUmNJUDByQzRGWGdXOXpPblhtREpNTnlFbHRobWlMbkxzcGovZzZDMHlCL3lyQy9QbXhYSkhwUTZWUVIKeTFrOGZLQkVQa1V3OFJ4QUZDOWNJR01ORHdBM3NjUmdpd0NlanVxYmNtTGNMVW5vaXBtclNLR1pMZGxqQlpZcwpMbHRiU3orcVljem9EczV
+    tls.key: LS0tLS1CRUdJTiBSU0EgUFJJVkFURSBLRVktLS0tLQpNSUlFcEFJQkFBS0NBUUVBODJhL1hDQ3EveG96N2k1WmNBRkxGZ3RMMGw3Zi9DaEc1YTgyZExDRVBWa2I0alFSClhMcStWTmZkZ09hRXMzOTlhczhBaW90UDlkZURPM2VTRWgvV3JCSjI3VHovVkp3MURGcDA1dWRISVR6di9UZ0oKQlllZExuS0VVOXc4OVp3QTJXMlR6TEZnWFg4Mjh1NGRoc0ZvVEl1QmdTcFFONzVkOWlEZ2RGRkZGd2cvU3NMZwpWZUJiM002ZGVZTWt3M0lTVzJHYUl1Y3V5bVArRG9MVElIL0tzTDgrYkZja2VsRHBWQkhMV1R4OG9FUStSVER4CkhFQVVMMXdnWXcwUEFEZXh4R0NMQUo2TzZwdHlZdHd0U2VpS21hdElvWmt0MldNRmxpd3VXMXRMUDZwaHpPZ08Kem1mM0l0aSt2dVp0blBESTFwMTB2WnJySzhWMlhON3dTSVRQRHdJREFRQUJBb0lCQVFDWDk3REdmb2NFMjRGTQoxcGQwdlBuNmUzY05rN3JaSHZTVTl6NVN3TnJ2eXJFRUhHb3lzVTJnZjE2RzJtWkVBL2QwTm1ZcUdpMEVXMWhPClNxdGlzWXBBeVE2RHRLL2VUZUU1STBrVjJaU3BoZmg0NndHRytGTUU2dTcveE9ReW5RSlN2bjJuTVovdkFEeDQKbEg3TzRmYVN4QTlKYS9mRnRnL0lXbUtKZlN4YjRjeWNiMjFPbjJ2aW5LR1BxYXBodVplQ094SUk2NXI1ZERsdwoveVBKQkNKcVJYNUY2bW5kOTBhclhMS01XdHZyZDVlL3E2SjZQSlc4N3pRc29KSHluRE5vNzc1eFRnSCswamVoCm1UeVZJQ2JRb3VYL1l0YzJkVkg2Wi9M
