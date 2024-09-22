@@ -40,7 +40,7 @@ jobs:
             echo "key: $key"
             echo "*************************"
             
-            if [[ $key ==  ]]
+            if [[ $key == ${{env.obj}}]]
             then  
               echo "found match! $oper ${{env.obj}}"
 
