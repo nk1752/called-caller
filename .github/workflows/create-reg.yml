@@ -119,6 +119,8 @@ jobs:
             -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration inspect --file=/registration/registration.yaml > reg-date.yaml
+
+          cat reg-date.yaml
           
           
       - name: check for renew 

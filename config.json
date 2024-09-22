@@ -14,7 +14,7 @@
     "no": "1"
   },
   "fgw3": {
-    "oper": "register",
+    "oper": "renew",
     "bg": "accounts",
     "env": "qa",
     "size": "small",
