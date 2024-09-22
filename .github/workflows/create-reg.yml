@@ -65,11 +65,17 @@ jobs:
 
               jq -r .$key.oper config.json
 
-              echo "oper=$(jq -r .$key.oper config.json)" >> $GITHUB_OUTPUT
-              echo "bg=$(jq -r .$key.bg config.json)" >> $GITHUB_OUTPUT
-              echo "env=$(jq -r .$key.env config.json)" >> $GITHUB_OUTPUT
-              echo "size=$(jq -r .$key.size config.json)" >> $GITHUB_OUTPUT
-              echo "no=$(jq -r .$key.no config.json)" >> $GITHUB_OUTPUT
+              oper=$(jq -r ".$key.oper" config.json)
+              echo "oper=$oper" >> $GITHUB_OUTPUT
+              bg=$(jq -r ".$key.bg" config.json)
+              echo "bg=$bg" >> $GITHUB_OUTPUT
+              env=$(jq -r ".$key.env" config.json)
+              echo "env=$env" >> $GITHUB_OUTPUT
+              size=$(jq -r ".$key.size" config.json)
+              echo "size=$size" >> $GITHUB_OUTPUT
+              no=$(jq -r ".$key.no" config.json)
+              echo "no=$no" >> $GITHUB_OUTPUT
+              echo "fgw-name=fgw-$bg-$env-$size-$no" >> $GITHUB_OUTPUT
 
               break
             else
@@ -85,9 +91,6 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           echo fgw-name=${{steps.search.outputs.fgw-name}}
-          
-          name=fwg-${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
-          echo $name
               
       - name: check for register 
         if: ${{steps.search.outputs.oper == 'register'}}
