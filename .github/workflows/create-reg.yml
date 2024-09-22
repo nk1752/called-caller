@@ -74,7 +74,9 @@ jobs:
               echo "size=$size" >> $GITHUB_OUTPUT
               no=$(jq -r ".$key.no" config.json)
               echo "no=$no" >> $GITHUB_OUTPUT
-              echo "fgw-name=fgw-$bg-$env-$size-$no" >> $GITHUB_OUTPUT
+              fgw-name="$(fgw-$bg-$env-$size-$no)"
+              echo "fgw-name=$fgw-name" >> $GITHUB_OUTPUT
+              echo "##fgw-name=$fgw-name" >> $GITHUB_SUMMARY
 
               break
             else
