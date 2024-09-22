@@ -82,7 +82,7 @@ jobs:
           echo fgw-name=${{steps.search.outputs.fgw-name}}
 
           
-          name=nadeem-${{env.obj}}
+          name=nadeem-${{steps.search.outputs.oper}}
           echo $name
 
           
