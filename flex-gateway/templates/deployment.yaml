@@ -1,0 +1,219 @@
+{{- $name := .Release.Name -}}
+{{- $version := .Release.Revision | quote -}}
+{{- $useNewRegistration := or .Values.registration.secretName .Values.registration.content }}
+{{- $_ := required "registerSecretName, registration.content or registration.secretName is required!" (default .Values.registerSecretName $useNewRegistration) -}}
+
+{{- $mountPath := "/etc/mulesoft/flex-gateway/conf.d/registration" }}
+{{- $secretName := "" }}
+{{- $configName := printf "%s-configuration-v%d" $name .Release.Revision }}
+{{- $configMountPath := "/etc/mulesoft/flex-gateway/conf.d/configuration" }}
+
+{{- if not (has .Values.gateway.scope (list "Cluster" "Namespace")) }}
+{{- fail "gateway.scope must be one of 'Cluster' or 'Namespace'" }}
+{{- end }}
+
+{{- if .Values.registration.secretName }}
+  {{- $secretName =.Values.registration.secretName }}
+{{- else if .Values.registration.content }}
+  {{- $secretName = printf "%s-registration" $name }}
+{{- else }}
+  {{- $secretName = .Values.registerSecretName }}
+  {{- $mountPath = "/etc/mulesoft/flex-gateway/registration" }}
+{{- end }}
+
+{{- $serviceAccount := "default" -}}
+{{- if .Values.gateway.dataSources.kubernetes.enabled }}
+{{- $serviceAccount = $name -}}
+{{- end }}
+
+---
+{{- if .Values.registerSecretName }}
+# Warning: the registerSecretName value is deprecated in favor of the new
+# registration experience with registerContent, please migrate to the new way
+# of registering.
+{{- end -}}
+
+{{- $isK8s_1_21 := and (eq .Capabilities.KubeVersion.Major "1") (hasPrefix "21" .Capabilities.KubeVersion.Minor) -}}
+{{- if $isK8s_1_21 }}
+  {{- $sysctls := list }}
+  {{- range .Values.podSecurityContext.sysctls }}
+    {{- if eq .name "net.ipv4.ip_unprivileged_port_start" }}
+# Warning: net.ipv4.ip_unprivileged_port_start in podSecurityContext.sysctls is
+# not safe in kubernetes 1.21.
+    {{- else }}
+    {{ $sysctls = append $sysctls . }}
+    {{- end }}
+  {{- end }}
+  {{- $_ := set .Values.podSecurityContext "sysctls" $sysctls }}
+{{- end }}
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+    version: {{ $version }}
+    {{- with .Values.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.extraAnnotations }}
+  annotations: {{ toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- if not .Values.autoscaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+  {{- end }}
+
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+
+  {{- with .Values.updateStrategy }}
+  strategy: {{ toYaml . | nindent 4 }}
+  {{- end }}
+
+  minReadySeconds: {{ .Values.minReadySeconds }}
+
+  selector:
+    matchLabels:
+      app: {{ $name }}
+
+  template:
+    metadata:
+      labels:
+        app: {{ $name }}
+        version: {{ $version }}
+        {{- with .Values.extraLabels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+      {{- with .Values.extraAnnotations }}
+      annotations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.dnsConfig }}
+      dnsConfig: {{ toYaml . | nindent 8 }}
+      {{- end }}
+
+      serviceAccount: {{ $serviceAccount }}
+      serviceAccountName: {{ $serviceAccount }}
+
+      dnsPolicy: {{ .Values.dnsPolicy }}
+      terminationGracePeriodSeconds: {{ .Values.terminationGracePeriodSeconds }}
+      {{- if .Values.priorityClassName }}
+      priorityClassName: {{ .Values.priorityClassName | quote }}
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext: {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity: {{ toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.topologySpreadConstraints }}
+      topologySpreadConstraints: {{ toYaml . | nindent 8 }}
+      {{- end }}
+
+      {{- if .Values.image.pullSecretName }}
+      imagePullSecrets:
+        - name: {{ .Values.image.pullSecretName -}}
+      {{- end }}
+      containers:
+        - name: app
+          image: {{ .Values.image.name | quote }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          env:
+            {{- if not $useNewRegistration }}
+            - name: FLEX_RTM_ARM_AGENT_CONFIG
+              value: {{ $mountPath }}/platform.conf
+            {{- end }}
+            - name: FLEX_NAME
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.name
+            - name: FLEX_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: FLEX_DATASOURCE_K8S_ENABLED
+              value: {{ .Values.gateway.dataSources.kubernetes.enabled | quote }}
+            - name: FLEX_K8S_WATCH_NAMESPACE
+              {{- if eq .Values.gateway.scope "Namespace" }}
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+              {{- else }}
+              value: ""
+              {{- end }}
+            - name: FLEX_K8S_SELECTOR
+              value: {{ .Values.gateway.dataSources.kubernetes.selector }}
+            {{- if (include "gateway.mode.isIngress" .) }}
+            - name: FLEX_K8S_INGRESS_CLASS_CONTROLLER
+              value: {{ (include "ingressClass.controllerValue" .) }}
+            {{- end }}
+            - name: FLEX_STREAM_IDLE_TIMEOUT_SECONDS
+              value: {{ .Values.gateway.streamIdleTimeout | quote }}
+            - name: FLEX_SERVICE_ENVOY_CONCURRENCY
+              value: {{ include "gateway.concurrency" . }}
+            - name: FLEX_CONNECTION_IDLE_TIMEOUT_SECONDS
+              value: {{ .Values.gateway.connectionIdleTimeout | quote }}
+            - name: FLEX_SYNC_DEBOUNCE_TIME
+              value: {{ .Values.gateway.syncDebounceTime | quote }}
+            - name: FLEX_LOG_LEVEL
+              value: {{ (include "gateway.logLevel" . | quote ) }}
+            - name: FLEX_SERVICE_ENVOY_DRAIN_STRATEGY
+              value: gradual
+            - name: FLEX_SERVICE_ENVOY_DRAIN_TIME
+              value: {{ .Values.gateway.drainSeconds | quote }}
+            - name: FLEX_FORWARD_CLIENT_CERT_DETAILS
+              value: {{ .Values.gateway.forwardClientCertDetails | quote }}
+            {{- with .Values.extraEnvs }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+          resources:
+          {{- toYaml .Values.resources | nindent 12 }}
+          securityContext:
+            allowPrivilegeEscalation: {{ $isK8s_1_21 }}
+            capabilities:
+              drop:
+              - ALL
+              add:
+              - NET_BIND_SERVICE
+          volumeMounts:
+            - name: registration
+              readOnly: true
+              mountPath: {{ $mountPath }}
+            {{- if .Values.gateway.configuration }}
+            - name: configuration
+              readOnly: true
+              mountPath: {{ $configMountPath }}
+            {{- end }}
+            {{- with .Values.extraVolumeMounts }}
+              {{- toYaml . | nindent 12 }}
+            {{- end }}
+
+          {{- with .Values.livenessProbe }}
+          livenessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.readinessProbe }}
+          readinessProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.startupProbe }}
+          startupProbe: {{ toYaml . | nindent 12 }}
+          {{- end }}
+
+      volumes:
+        - name: registration
+          secret:
+            secretName: {{ $secretName }}
+        {{- if .Values.gateway.configuration }}
+        - name: configuration
+          secret:
+            secretName: {{ $configName }}
+        {{- end }}
+        {{- with .Values.extraVolumes }}
+          {{ toYaml . | nindent 8 }}
+        {{- end }}

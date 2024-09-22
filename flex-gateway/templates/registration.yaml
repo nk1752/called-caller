@@ -1,0 +1,14 @@
+{{- $name := .Release.Name -}}
+{{- if .Values.registration.content }}
+{{- $version := .Release.Revision | quote -}}
+
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $name }}-registration
+  labels:
+    app: {{ $name }}
+    version: {{ $version }}
+data:
+  registration.yaml: {{ b64enc .Values.registration.content }}
+{{- end }}

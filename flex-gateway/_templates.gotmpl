@@ -1,0 +1,11 @@
+{{ define "chart.valuesTable" }}
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+  {{- range .Values }}
+  {{- $defaultValue := (default .Default .AutoDefault) }}
+  {{- $defaultValue = (toPrettyJson (fromJson (trimAll "`" (default .Default .AutoDefault) ) ) ) }}
+  {{- $defaultValue = (join " " (splitList "\n" $defaultValue)) }}
+  {{- $description := (default .Description .AutoDescription) }}
+| {{ .Key }} | {{ .Type }} | `{{ $defaultValue }}` | {{ $description }} |
+  {{- end }}
+{{ end }}

@@ -1,0 +1,14 @@
+{{- $name := .Release.Name -}}
+{{- $version := .Release.Revision -}}
+
+{{- if .Values.gateway.configuration }}
+apiVersion: v1
+kind: Secret
+metadata:
+  name: {{ $name }}-configuration-v{{ $version }}
+  labels:
+    app: {{ $name }}
+    version: {{ $version | quote }}
+data:
+  configuration.yaml: {{ include "gateway.configuration" . | b64enc }}
+{{- end }}

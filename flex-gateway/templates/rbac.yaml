@@ -1,0 +1,66 @@
+{{- if .Values.gateway.dataSources.kubernetes.enabled }}
+
+{{- $name := .Release.Name -}}
+{{- $namespace := .Release.Namespace -}}
+{{- $version := .Release.Revision | quote -}}
+{{- $prefix := ternary "" "Cluster" (eq .Values.gateway.scope "Namespace") -}}
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: {{ $name }}
+
+---
+kind: {{ $prefix }}Role
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: flex-gateway:{{ $namespace }}:{{ $name }}
+rules:
+- apiGroups: [""]
+  resources: ["services"]
+  verbs: ["get", "list", "watch"] # You can also use ["*"]
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingresses"]
+  verbs: ["get", "list", "watch"]
+- apiGroups: ["gateway.mulesoft.com"]
+  resources: ["configurations", "services", "extensions", "apiinstances", "policybindings"]
+  verbs: ["get", "list", "watch"]
+---
+kind: {{ $prefix }}RoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: flex-gateway:{{ $namespace }}:{{ $name }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: {{ $prefix }}Role
+  name: flex-gateway:{{ $namespace }}:{{ $name }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $namespace }}
+
+{{- if (include "gateway.mode.isIngress" .) }}
+---
+kind: ClusterRole
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: flex-gateway:{{ $namespace }}:{{ $name }}-cluster-scoped
+rules:
+- apiGroups: ["networking.k8s.io"]
+  resources: ["ingressclasses"]
+  verbs: ["get", "list", "watch"]
+---
+kind: ClusterRoleBinding
+apiVersion: rbac.authorization.k8s.io/v1
+metadata:
+  name: flex-gateway:{{ $namespace }}:{{ $name }}-cluster-scoped
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: flex-gateway:{{ $namespace }}:{{ $name }}-cluster-scoped
+subjects:
+  - kind: ServiceAccount
+    name: {{ $name }}
+    namespace: {{ $namespace }}
+{{- end }}
+{{- end }}

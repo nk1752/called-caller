@@ -3,7 +3,7 @@ name: create registration
 on:
   workflow_call:
     inputs:
-      flex-name:
+      obj:
         type: string
         required: true
 
@@ -14,7 +14,7 @@ jobs:
     steps:
       - name: echo
         run: |
-          echo "caller send: ${{ inputs.flex-name }}"
+          echo "caller send: ${{ inputs.obj }}"
 
       - name: checkout
         uses: actions/checkout@v4.1.6
@@ -60,24 +60,20 @@ jobs:
             echo "*************************"
 
             oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
-            echo "testing ${{inputs.flex-name}} && $oper"
+            echo "obj --> ${{inputs.obj}}"
             
-            if [[ $key == ${{inputs.flex-name}} && $oper == "register" ]]
+            if [[ $key == ${{inputs.obj}} ]]
             then  
-              echo "found match! $oper ${{inputs.flex-name}}"
-              echo "oper=$oper" >> $GITHUB_OUTPUT
-              echo "flex-name=$key" >> $GITHUB_OUTPUT
-
-              break
-            elif [[ $key == ${{inputs.flex-name}} && $oper == "renew" ]]
-            then  
-              echo "found match! $oper ${{inputs.flex-name}}"
-              echo "oper=$oper" >> $GITHUB_OUTPUT
-              echo "flex-name=$key" >> $GITHUB_OUTPUT
+              echo "found match! $oper ${{inputs.obj}}"
+              echo "oper=$key.oper" >> $GITHUB_OUTPUT
+              echo "bg=$key.bg" >> $GITHUB_OUTPUT
+              echo "env=$key.env" >> $GITHUB_OUTPUT
+              echo "size=$key.size" >> $GITHUB_OUTPUT
+              echo "no=$key.no" >> $GITHUB_OUTPUT
 
               break
             else
-              echo "${{inputs.flex-name}} for operation $oper skipping..."
+              echo "skipping --> ${{inputs.obj}}"
               
               
             fi  
@@ -86,15 +82,19 @@ jobs:
 
       - name: check variables
         run: |
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.flex-name}}"
-
+          echo oper=${{steps.search.outputs.oper}}
+          echo obj=${{steps.search.outputs.obj}}
+          echo bg=${{steps.search.outputs.bg}}
+          echo env=${{steps.search.outputs.env}}
+          echo size=${{steps.search.outputs.size}}
+          echo no=${{steps.search.outputs.no}}
+              
       - name: check for register 
         if: ${{steps.search.outputs.oper == 'register'}}
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.flex-name}}"
+          echo "flex-name=${{steps.search.outputs.obj}}"
           
           
       - name: check for renew 
@@ -102,7 +102,7 @@ jobs:
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.flex-name}}"
+          echo "flex-name=${{steps.search.outputs.obj}}"
           
       - name: cleanup
         run: |

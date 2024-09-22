@@ -15,9 +15,4 @@ jobs:
     registration-job1:
       uses: ./.github/workflows/create-reg.yml
       with:
-        flex-name: "accounts-test"
-
-    registration-job2:
-      uses: ./.github/workflows/create-reg.yml
-      with:
-        flex-name: "accounts-qa"
+        obj: "fgw1"

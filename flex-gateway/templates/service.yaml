@@ -1,0 +1,123 @@
+{{- $name := .Release.Name -}}
+{{- $version := .Release.Revision | quote -}}
+{{- $_ := set .Values.service.http "targetPort" (.Values.service.http.targetPort | default .Values.service.http.port) }}
+{{- $_ = set .Values.service.https "targetPort" (.Values.service.https.targetPort | default .Values.service.https.port) }}
+{{- if .Values.service.enabled }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ $name }}
+  labels:
+    app: {{ $name }}
+    version: {{ $version }}
+    {{- with .Values.service.extraLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with .Values.service.extraAnnotations }}
+  annotations: {{ toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  type: "{{ .Values.service.type }}"
+
+  ports:
+  {{- $setNodePorts := (or (eq .Values.service.type "NodePort") (eq .Values.service.type "LoadBalancer")) }}
+  {{- if .Values.service.http.enabled }}
+  - name: http
+    port: {{ .Values.service.http.port }}
+    targetPort: {{ .Values.service.http.targetPort }}
+    protocol: TCP
+    {{- if and (semverCompare ">=1.20" .Capabilities.KubeVersion.Version) (.Values.service.http.appProtocol) }}
+    appProtocol: http
+    {{- end }}
+    {{- if (and $setNodePorts (not (empty .Values.service.http.nodePort))) }}
+    nodePort: {{ .Values.service.http.nodePort }}
+    {{- end }}
+  {{- end }}
+  {{- if .Values.service.https.enabled }}
+  - name: https
+    port: {{ .Values.service.https.port }}
+    targetPort: {{ .Values.service.https.targetPort }}
+    protocol: TCP
+    {{- if and (semverCompare ">=1.20" .Capabilities.KubeVersion.Version) (.Values.service.https.appProtocol) }}
+    appProtocol: https
+    {{- end }}
+    {{- if (and $setNodePorts (not (empty .Values.service.https.nodePort))) }}
+    nodePort: {{ .Values.service.https.nodePort }}
+    {{- end }}
+  {{- end }}
+  {{- with .Values.service.extraPorts }}
+    {{- toYaml . | nindent 2 }}
+  {{- end }}
+
+  selector:
+    app: {{ $name }}
+
+  {{- with .Values.service.clusterIP }}
+  clusterIP: {{ . }}
+  {{- end }}
+  {{- with .Values.service.externalIPs }}
+  externalIPs: {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.service.externalTrafficPolicy }}
+  externalTrafficPolicy: {{ . }}
+  {{- end }}
+  {{- with .Values.service.sessionAffinity }}
+  sessionAffinity: {{ . }}
+  {{- end }}
+  {{- with .Values.service.healthCheckNodePort }}
+  healthCheckNodePort: {{ . }}
+  {{- end }}
+
+  {{- if semverCompare ">=1.21.0-0" .Capabilities.KubeVersion.Version }}
+  {{- with .Values.service.ipFamilyPolicy }}
+  ipFamilyPolicy: {{ . }}
+  {{- end }}
+  {{- with .Values.service.ipFamilies }}
+  ipFamilies: {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+
+  {{- if eq .Values.service.type "LoadBalancer" }}
+  {{- if semverCompare ">=1.24.0-0" .Capabilities.KubeVersion.Version }}
+  allocateLoadBalancerNodePorts: {{ .Values.service.allocateLoadBalancerNodePorts }}
+  {{- end }}
+  {{- with .Values.service.loadBalancerSourceRanges }}
+  loadBalancerSourceRanges: {{ toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+
+{{- if .Values.gateway.dataSources.kubernetes.enabled }}
+{{- if not (has .Values.gateway.mode (list "local" "connected")) }}
+{{- fail "gateway.mode must be one of 'local' or 'connected'" }}
+{{- end }}
+{{- if eq .Values.gateway.mode "local" }}
+{{- if .Values.service.http.enabled }}
+---
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: ApiInstance
+metadata:
+  name: {{ $name }}-http
+  labels:
+    app: {{ $name }}
+    version: {{ $version }}
+spec:
+  address: http://0.0.0.0:{{ .Values.service.http.targetPort }}
+{{- end }}
+
+{{- if .Values.service.https.enabled }}
+---
+apiVersion: gateway.mulesoft.com/v1alpha1
+kind: ApiInstance
+metadata:
+  name: {{ $name }}-https
+  labels:
+    app: {{ $name }}
+    version: {{ $version }}
+spec:
+  address: http://0.0.0.0:{{ .Values.service.https.targetPort }}
+{{- end }}
+
+{{- end }}
+{{- end }}
+{{- end }}

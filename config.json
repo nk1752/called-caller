@@ -1,14 +1,30 @@
 {
-  "accounts-dev": {
-    "oper": "bypass"
+  "fgw1": {
+    "oper": "register",
+    "bg": "accounts",
+    "env": "dev",
+    "size": "small",
+    "no": "1"
   },
-  "accounts-test": {
-    "oper": "register"
+  "fwg2": {
+    "oper": "bypass",
+    "bg": "bg1",
+    "env": "env1",
+    "size": "small",
+    "no": "1"
   },
-  "accounts-qa": {
-    "oper": "register"
+  "fgw3": {
+    "oper": "bypass",
+    "bg": "bg1",
+    "env": "env1",
+    "size": "small",
+    "no": "1"
   },
-  "mbanking-qa": {
-    "oper": "renew"
+  "fgw4": {
+    "oper": "bypass",
+    "bg": "bg1",
+    "env": "env1",
+    "size": "small",
+    "no": "1"
   }
 }

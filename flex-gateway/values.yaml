@@ -1,0 +1,305 @@
+# *******************
+# Gateway
+# *******************
+
+gateway:
+  # -- Installation scope: Cluster or Namespace gateway
+  scope: Cluster
+  # -- Operation mode of the gateway: local or connected
+  mode: local
+  dataSources:
+    kubernetes:
+      # -- Setting to define if the gateway reads the resources from Kubernetes
+      enabled: true
+      # -- Selector (label query) that the gateway uses to filter the resources
+      # when generating the configuration.
+      # For example, "label1=value1,label2=value2" applies to the resources that
+      # have both labels: "label1=value1" and "label2=value2".
+      selector: null
+
+  # -- Stream idle timeout of all APIs
+  # It should be the number of seconds.
+  streamIdleTimeout: 300
+
+  # -- Defines the connection idle timeout of all apis.
+  # It should be the number of seconds.
+  connectionIdleTimeout: 60
+
+  # -- Defines the time to wait for changes before applying the configuration.
+  # It should be a duration string such as "5s".
+  syncDebounceTime: "5s"
+
+  # -- The time in seconds that Flex will drain connections when individual apis are being modified or removed.
+  # During the drain sequence, the drain manager encourages draining through terminating 
+  # connections on request completion, sending “Connection: CLOSE” on HTTP1, and sending GOAWAY on HTTP2.
+  drainSeconds: 25
+
+  # -- Defines how to handle the x-forwarded-client-cert (XFCC) HTTP header.
+  # Possible values: `SANITIZE`, `FORWARD_ONLY`, `APPEND_FORWARD`,
+  # `SANITIZE_SET`, and `ALWAYS_FORWARD_ONLY`.
+  # Ref: https://www.envoyproxy.io/docs/envoy/latest/api-v3/extensions/filters/network/http_connection_manager/v3/http_connection_manager.proto#envoy-v3-api-enum-extensions-filters-network-http-connection-manager-v3-httpconnectionmanager-forwardclientcertdetails
+  forwardClientCertDetails: "SANITIZE"
+
+  # -- (object) gateway.mulesoft.com/v1beta1 Configuration to be defined when installing the helm chart.
+  # Ref: https://docs.mulesoft.com/gateway/latest/flex-local-configuration-reference-guide#configuration
+  configuration: null
+
+# *******************
+# Deployment
+# *******************
+
+image:
+  name: mulesoft/flex-gateway:1.8.0
+  # -- Pull policy for the image. Possible values: `ifNotPresent`, `Always`, and
+  # `Never`
+  # Ref: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
+  pullPolicy: IfNotPresent
+  # -- Name of the secret that contains the Docker registry credentials
+  # The secret must exist in the same namespace as the Helm release
+  pullSecretName:
+
+# -- Number of Deployment replicas
+replicaCount: 1
+
+autoscaling:
+  # -- Boolean that indicates if the Horizontal Pod Autoscaler (HPA) is enabled
+  enabled: false
+  # -- Minimum number of replicas that the scaler is allowed to create
+  minReplicas: 2
+  # -- Maximum number of replicas that the scaler is allowed to create
+  maxReplicas: 11
+  # -- Average CPU usage percentage of all deployed Pods
+  targetCPUUtilizationPercentage: 50
+  # -- Average memory usage percentage of all deployed Pods
+  targetMemoryUtilizationPercentage: null
+  extraMetrics: []
+  behavior: {}
+
+resources:
+  limits:
+    # -- CPU resource limits expressed in millicores
+    cpu: 1000m
+    # -- Memory resource limits
+    memory: 1024Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
+
+# -- Labels added to the Deployment
+extraLabels: {}
+
+# -- Annotations added to the Deployment
+extraAnnotations: {}
+
+# -- Rollback limit
+revisionHistoryLimit: 10
+
+# -- Update strategy to apply to the Deployment
+updateStrategy: {}
+#  rollingUpdate:
+#    maxUnavailable: 1
+#  type: RollingUpdate
+
+# -- Setting to prevent killing Pods before they are ready
+minReadySeconds: 0
+
+# -- Optional customization for the Pod `dnsConfig`
+dnsConfig: {}
+
+# -- Optional duration in seconds the pod needs to terminate gracefully.
+# Ref: https://kubernetes.io/docs/reference/generated/kubernetes-api/v1.26/
+terminationGracePeriodSeconds: 30
+
+# -- Set to `ClusterFirstWithHostNet` if `hostNetwork: true`.
+# By default, the name resolution uses the host DNS while using the host network.
+# To make Flex Gateway resolve names in the k8s network,
+# use `ClusterFirstWithHostNet`.
+dnsPolicy: ClusterFirst
+
+priorityClassName: ""
+
+# -- Liveness probe values
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+livenessProbe:
+  exec:
+    command:
+    - flexctl
+    - probe
+    - --check=liveness
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 5
+  timeoutSeconds: 10
+
+# -- Readiness probe values
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
+readinessProbe:
+  exec:
+    command:
+      - flexctl
+      - probe
+      - --check=readiness
+      - --allow-api-errors
+      - --allow-envoy-errors
+      - --allow-policy-errors
+  initialDelaySeconds: 10
+  periodSeconds: 10
+  failureThreshold: 2
+  timeoutSeconds: 5
+
+startupProbe: {}
+
+# -- This section refers to the creation of the `IngressClass` resource
+# Ref: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class
+ingressClass:
+  # -- Setting enablement of `ingressClass`
+  enabled: true
+  # -- Name of `ingressClass`. Name by default: <releaseName>-<namespace>
+  name: null
+  # -- Setting for defining if this is the default `ingressClass` for the cluster
+  setAsDefault: false
+
+# -- Additional `volumeMounts`
+extraVolumeMounts: []
+#  - name: custom-config
+#    mountPath: /etc/mulesoft/flex-gateway/conf.d/custom-config
+#    readOnly: true
+
+# -- Additional volumes to the Pod
+extraVolumes: []
+#  - name: custom-config
+#    configMap:
+#      name: log-config
+
+# -- Additional environment variables to set
+extraEnvs: []
+
+# -- Node labels for controller Pod assignment
+# Ref: https://kubernetes.io/docs/user-guide/node-selection/
+nodeSelector: {}
+
+# -- Node tolerations for server scheduling to nodes with taints
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
+tolerations: []
+#  - key: "key"
+#    operator: "Equal|Exists"
+#    value: "value"
+#    effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+
+# Affinity for Pod assignment
+# Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/#affinity-and-anti-affinity
+affinity: {}
+
+# -- The topology spread constraints rely on the node labels to identify
+# the topology domain(s) in which each node is.
+# Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-topology-spread-constraints/
+topologySpreadConstraints: []
+# - maxSkew: 1
+#   topologyKey: topology.kubernetes.io/zone
+#   whenUnsatisfiable: DoNotSchedule
+
+# -- Security context policies for controller Pods
+# See https://kubernetes.io/docs/tasks/administer-cluster/sysctl-cluster/ for
+# notes on enabling and using `sysctls`
+podSecurityContext:
+  runAsNonRoot: true
+  runAsUser: 65534
+  seccompProfile:
+    type: RuntimeDefault
+  sysctls:
+  - name: net.ipv4.ip_unprivileged_port_start
+    value: "0"
+
+# *******************
+# Service
+# *******************
+service:
+  # -- Boolean that indicates if a service to expose the Deployment is created
+  enabled: true
+
+  # -- Type of service to create
+  # Possible values: `ClusterIP`, `NodePort`, `LoadBalancer`
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
+  type: LoadBalancer
+
+  http:
+    # -- Boolean that indicates if the HTTP port must be enabled for the service
+    enabled: true
+    # -- Service HTTP port
+    port: 80
+    nodePort: 0
+    targetPort: null
+    appProtocol: false
+  https:
+    # -- Boolean that indicates if the HTTPS port must be enabled for the service
+    enabled: true
+    # -- The service HTTPS port
+    port: 443
+    nodePort: 0
+    targetPort: null
+    appProtocol: false
+
+  # -- Additional ports to expose
+  extraPorts: []
+  #  - protocol: TCP
+  #    port: 8080
+
+  extraLabels: {}
+  extraAnnotations: {}
+  clusterIP: ""
+
+  # -- List of IP addresses at which the service is available
+  # Ref: https://kubernetes.io/docs/user-guide/services/#external-ips
+  externalIPs: []
+
+  # -- Used by cloud providers to connect the resulting `LoadBalancer` to a pre-existing static IP
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
+  loadBalancerSourceRanges: []
+
+  # -- Set external traffic policy to `local` to preserve source IP on providers
+  # supporting it
+  # Ref: https://kubernetes.io/docs/tutorials/services/source-ip/#source-ip-for-services-with-typeloadbalancer
+  externalTrafficPolicy: ""
+
+  # -- Possible settings: `None` or `ClientIP`. Kubernetes default: `None`
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#virtual-ips-and-service-proxies
+  sessionAffinity: ""
+
+  # -- Health check node port (numeric port number) for the service.
+  # If `healthCheckNodePort` isn’t specified, the service controller allocates
+  # a port from your cluster NodePort range.
+  # Ref: https://kubernetes.io/docs/tasks/access-application-cluster/create-external-load-balancer/#preserving-the-client-source-ip
+  healthCheckNodePort: 0
+
+  # -- Dual-stack-ness requested or required by this service. Possible values:
+  # `SingleStack`, `PreferDualStack`, or `RequireDualStack`.
+  # `ipFamilies` and `clusterIPs` fields depend on the value of this field
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ipFamilyPolicy: ""
+
+  # -- List of IP families (e.g. IPv4, IPv6) assigned to the service.
+  # This field is usually assigned automatically based on cluster configuration
+  # and the `ipFamilyPolicy` field.
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/dual-stack/
+  ipFamilies: []
+
+  # -- You can disable node port allocation for a Service of `type=LoadBalancer`
+  # by setting the field `allocateLoadBalancerNodePorts` to false.
+  # Ignored for Kubernetes versions older than 1.24
+  # Ref: https://kubernetes.io/docs/concepts/services-networking/service/#load-balancer-nodeport-allocation
+  allocateLoadBalancerNodePorts: true
+
+# *******************
+# Registration
+# *******************
+# -- Deprecated. Use `registration.secretName`
+registerSecretName: null
+
+registration:
+  # -- If this field is provided, the installation creates a Kubernetes secret
+  # resource that contains the contents of the registration files.
+  content: null
+  # -- If this field is provided, registration requires that a Kubernetes secret
+  # with the given name exists. The secret must contain the content of the
+  # registration files.
+  secretName: null

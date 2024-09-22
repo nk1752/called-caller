@@ -1,0 +1,7 @@
+apiVersion: v1
+appVersion: 1.8.0
+description: A Helm chart for Mulesoft Flex Gateway
+home: https://docs.mulesoft.com/gateway/
+kubeVersion: '>= 1.21.0-0'
+name: flex-gateway
+version: 1.8.0
