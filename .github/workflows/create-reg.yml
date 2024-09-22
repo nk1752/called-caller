@@ -83,7 +83,6 @@ jobs:
       - name: check variables
         run: |
           echo oper=${{steps.search.outputs.oper}}
-          echo obj=${{steps.search.outputs.obj}}
           echo bg=${{steps.search.outputs.bg}}
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
@@ -94,15 +93,15 @@ jobs:
         run: |
           echo "registering..."
           echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.obj}}"
+          fgw-name=$(fgw-${{steps.search.outputs.gb}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}})
+          echo "fgw-name=$fgw-name"
           
           
       - name: check for renew 
         if: ${{steps.search.outputs.oper == 'renew'}}
         run: |
           echo "registering..."
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo "flex-name=${{steps.search.outputs.obj}}"
+          echo "oper=${{steps.search.outputs.oper}}""
           
       - name: cleanup
         run: |
