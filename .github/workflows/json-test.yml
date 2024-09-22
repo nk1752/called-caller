@@ -41,8 +41,12 @@ jobs:
             echo "*************************"
             
             # get the value of the key
-            value=$(jq -r ".$key" config.json)
-            echo "value: $value"
+            tobj=$(jq -r ".$key" config.json)
+            echo "oper: $tobj.oper"
+            echo "bg: $tobj.bg"
+            echo "env: $tobj.env"
+            echo "size: $tobj.size"
+            echo "no: $tobj.no"
             
           done # end of for loop
 
