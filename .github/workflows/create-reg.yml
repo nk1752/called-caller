@@ -50,6 +50,11 @@ jobs:
           mkdir -p renew
           ls -l
 
+      - name: get secrets
+        run: |
+          echo "getting secrets..."
+          
+
       - name: search
         id: search
         run: |
@@ -99,7 +104,7 @@ jobs:
           echo fgw-name=${{steps.search.outputs.fgw-name}}
 
           sudo docker run --entrypoint flexctl \
-            -v "$(pwd)/flex-reg":/registration \
+            -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration create \
             --client-id=b95726291f564ae2942ac2c4ecc46311 \
@@ -121,7 +126,7 @@ jobs:
 
           sudo docker run --entrypoint flexctl \
             -v "$(pwd)/renew":/renew \
-            -v "$(ped)/temp":/registration \
+            -v "$(pwd)/temp":/registration \
             -u $UID mulesoft/flex-gateway \
             registration renew \
             --client-id=b95726291f564ae2942ac2c4ecc46311 \
