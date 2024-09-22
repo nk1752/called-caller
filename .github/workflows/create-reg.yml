@@ -58,18 +58,18 @@ jobs:
             echo "*************************"
             echo "key: $key"
             echo "*************************"
-
-            oper=$(jq -r --arg key "$key" '.[$key].oper' config.json)
-            echo "obj --> ${{inputs.obj}}"
             
             if [[ $key == ${{inputs.obj}} ]]
             then  
               echo "found match! $oper ${{inputs.obj}}"
-              echo "oper=$key.oper" >> $GITHUB_OUTPUT
-              echo "bg=$key.bg" >> $GITHUB_OUTPUT
-              echo "env=$key.env" >> $GITHUB_OUTPUT
-              echo "size=$key.size" >> $GITHUB_OUTPUT
-              echo "no=$key.no" >> $GITHUB_OUTPUT
+
+              jq -r .$key.oper config.json
+
+              echo "oper=$(jq -r .$key.oper config.json)" >> $GITHUB_OUTPUT
+              echo "bg=$(jq -r .$key.bg config.json)" >> $GITHUB_OUTPUT
+              echo "env=$(jq -r .$key.env config.json)" >> $GITHUB_OUTPUT
+              echo "size=$(jq -r .$key.size config.json)" >> $GITHUB_OUTPUT
+              echo "no=$(jq -r .$key.no config.json)" >> $GITHUB_OUTPUT
 
               break
             else
