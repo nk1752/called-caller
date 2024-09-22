@@ -54,12 +54,17 @@ jobs:
               
               # get the value of the key
               oper=$(jq -r ".$key.oper" config.json)
-              echo "oper: $oper"
+              echo "oper: $oper" >> $GITHUB_OUTPUT
               bg=$(jq -r ".$key.bg" config.json)
-              echo "bg: $bg"
+              echo "bg: $bg" >> $GITHUB_OUTPUT
               env=$(jq -r ".$key.env" config.json)
+              echo "env: $env" >> $GITHUB_OUTPUT
               size=$(jq -r ".$key.size" config.json)
+              echo "size: $size" >> $GITHUB_OUTPUT
               no=$(jq -r ".$key.no" config.json)
+              echo "no: $no" >> $GITHUB_OUTPUT
+
+              break
             fi
 
             
@@ -72,3 +77,5 @@ jobs:
           echo env=${{steps.search.outputs.env}}
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
+
+          echo flex-name=${{steps.search.outputs.bg}}-${{steps.search.outputs.env}}-${{steps.search.outputs.size}}-${{steps.search.outputs.no}}
