@@ -44,12 +44,6 @@ jobs:
         run: |
           cat /etc/os-release
 
-      - name: make temp directory
-        run: |
-          mkdir -p temp
-          mkdir -p renew
-          ls -l
-
       - name: get secrets
         run: |
           echo "getting secrets..."
@@ -114,6 +108,13 @@ jobs:
             --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
             --output-directory=/registration \
             "${{steps.search.outputs.fgw-name}}"
+
+          cat registration.yaml
+
+          # commit the registration.yaml file to repo
+          git add registration.yaml
+          git commit -m "registration.yaml"
+          git push
           
           
       - name: check for renew 
@@ -124,9 +125,12 @@ jobs:
 
           sudo docker exec -u $UID "${{steps.search.outputs.fgw-name}}" flexctl registration inspect
 
+          mkdir -p renew
+          ls -l
+
           sudo docker run --entrypoint flexctl \
             -v "$(pwd)/renew":/renew \
-            -v "$(pwd)/temp":/registration \
+            -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration renew \
             --client-id=b95726291f564ae2942ac2c4ecc46311 \
@@ -137,6 +141,18 @@ jobs:
       - name: cleanup
         run: |
           echo "cleaning up..."
-          rm -rf temp
-          rm -rf renew
+          if [ -d "renew" ]; then
+            echo "renew directory exists"
+            rm -rf renew
+          else
+            echo "renew directory does not exist"
+          fi
+          
+          if [ -f "registration.yaml" ]; then
+            echo "registration.yaml exists"
+            rm registration.yaml
+          else
+            echo "registration.yaml does not exist"
+          fi
+          
           ls -l
