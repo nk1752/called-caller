@@ -40,14 +40,27 @@ jobs:
             echo "key: $key"
             echo "*************************"
             
-            # get the value of the key
-            oper=$(jq -r ".$key.oper" config.json)
-            echo "oper: $oper"
-            bg=$(jq -r ".$key.bg" config.json)
-            echo "bg: $bg"
-            env=$(jq -r ".$key.env" config.json)
-            size=$(jq -r ".$key.size" config.json)
-            no=$(jq -r ".$key.no" config.json)
+            if [ -z "$key" ]; then
+              echo "key is empty"
+              continue
+            fi
+
+            if [ "$key" == "null" ]; then
+              echo "key is null"
+              continue
+            fi
+
+            if [[ "$key" == ${{env.obj}} ]]; then
+              
+              # get the value of the key
+              oper=$(jq -r ".$key.oper" config.json)
+              echo "oper: $oper"
+              bg=$(jq -r ".$key.bg" config.json)
+              echo "bg: $bg"
+              env=$(jq -r ".$key.env" config.json)
+              size=$(jq -r ".$key.size" config.json)
+              no=$(jq -r ".$key.no" config.json)
+            fi
 
             
           done # end of for loop
