@@ -47,7 +47,6 @@ jobs:
       - name: get secrets
         id: vault
         run: |
-          echo "getting secrets..."
           echo "CLIENT_ID=b95726291f564ae2942ac2c4ecc46311" >> $GITHUB_OUTPUT
           echo "CLIENT_SECRET=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
           echo "ORG_ID=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
@@ -94,6 +93,11 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           echo fgw-name=${{steps.search.outputs.fgw-name}}
+
+          echo client_id=${{steps.vault.outputs.CLIENT_ID}}
+          echo client_secret=${{steps.vault.outputs.CLIENT_SECRET}}
+          echo org_id=${{steps.vault.outputs.ORG_ID}}
+          echo env_id=${{steps.vault.outputs.ENV_ID}}
 
       - name: check for register
         if: ${{steps.search.outputs.oper == 'register'}}
