@@ -47,7 +47,6 @@ jobs:
       - name: get secrets
         run: |
           echo "getting secrets..."
-          
 
       - name: search
         id: search
@@ -58,7 +57,7 @@ jobs:
             echo "key: $key"
             echo "*************************"
             
-            if [[ "$key" == ${{inputs.obj}} ]]
+            if [[ "$key" == ${{inputs.obj}} ]];
             then  
               echo "found match! $oper ${{inputs.obj}}"
 
@@ -76,7 +75,7 @@ jobs:
               echo "no=$no" >> $GITHUB_OUTPUT
               fgw=fgw-$bg-$env-$size-$no
               echo "fgw-name=$fgw" >> $GITHUB_OUTPUT
-              echo "##Flex Gateway Name: $fgw" >> $GITHUB_STEP_SUMMARY
+              echo "### Flex Gateway Name: $fgw" >> $GITHUB_STEP_SUMMARY
 
               break
             else
@@ -92,8 +91,8 @@ jobs:
           echo size=${{steps.search.outputs.size}}
           echo no=${{steps.search.outputs.no}}
           echo fgw-name=${{steps.search.outputs.fgw-name}}
-              
-      - name: check for register 
+
+      - name: check for register
         if: ${{steps.search.outputs.oper == 'register'}}
         run: |
           echo "oper=${{steps.search.outputs.oper}}"
@@ -113,7 +112,6 @@ jobs:
 
           cat registration.yaml
 
-
       # inspect registration.yaml
       - name: inspection
         run: |
@@ -123,9 +121,8 @@ jobs:
             registration inspect --file=/registration/registration.yaml > reg-date.yaml
 
           cat reg-date.yaml
-          
-          
-      - name: check for renew 
+
+      - name: check for renew
         if: ${{steps.search.outputs.oper == 'renew'}}
         run: |
           echo "oper=${{steps.search.outputs.oper}}"
@@ -145,7 +142,7 @@ jobs:
             /registration/registration.yaml
 
             cat renew/registration.yaml
-          
+
       - name: cleanup
         run: |
           echo "cleaning up..."
@@ -155,7 +152,7 @@ jobs:
           else
             echo "renew directory does not exist"
           fi
-          
+
           if [ -f "registration.yaml" ]; then
             echo "registration.yaml exists"
             rm registration.yaml
