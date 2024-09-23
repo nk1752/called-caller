@@ -45,8 +45,13 @@ jobs:
           cat /etc/os-release
 
       - name: get secrets
+        id: vault
         run: |
           echo "getting secrets..."
+          echo "CLIENT_ID=b95726291f564ae2942ac2c4ecc46311" >> $GITHUB_OUTPUT
+          echo "CLIENT_SECRET=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
+          echo "ORG_ID=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
+          echo "ENV_ID=a6ea8ce7-6d5f-41ee-a802-5505e8833854" >> $GITHUB_OUTPUT
 
       - name: search
         id: search
@@ -78,8 +83,6 @@ jobs:
               echo "### Flex Gateway Name: $fgw" >> $GITHUB_STEP_SUMMARY
 
               break
-            else
-              echo "skipping --> ${{inputs.obj}}"
             fi  
           done # end of for loop
 
@@ -102,11 +105,11 @@ jobs:
             -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration create \
-            --client-id=b95726291f564ae2942ac2c4ecc46311 \
-            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
-            --environment=2c6f18bb-03e2-4874-a489-7216df5b5bc2 \
+            --client-id=${{steps.vault.outputs.CLIENT_ID}} \
+            --client-secret=${{steps.vault.outputs.CLIENT_SECRET}} \
+            --environment=${{steps.vault.outputs.ENV_ID}} \
             --connected=true \
-            --organization=a6ea8ce7-6d5f-41ee-a802-5505e8833854 \
+            --organization=${{steps.vault.outputs.ORG_ID}} \
             --output-directory=/registration \
             "${{steps.search.outputs.fgw-name}}"
 
@@ -118,9 +121,9 @@ jobs:
           sudo docker run --entrypoint flexctl \
             -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
-            registration inspect --file=/registration/registration.yaml > reg-date.yaml
+            registration inspect --file=/registration/registration.yaml > expiry-date.yaml
 
-          cat reg-date.yaml
+          cat expiry-date.yaml
 
       - name: check for renew
         if: ${{steps.search.outputs.oper == 'renew'}}
@@ -136,8 +139,8 @@ jobs:
             -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration renew \
-            --client-id=b95726291f564ae2942ac2c4ecc46311 \
-            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --client-id=${{steps.vault.outputs.CLIENT_ID}} \
+            --client-secret=${{steps.vault.outputs.CLIENT_SECRET}} \
             --output-directory=/renew \
             /registration/registration.yaml
 
