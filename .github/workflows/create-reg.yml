@@ -49,8 +49,8 @@ jobs:
         run: |
           echo "CLIENT_ID=b95726291f564ae2942ac2c4ecc46311" >> $GITHUB_OUTPUT
           echo "CLIENT_SECRET=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
-          echo "ORG_ID=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
-          echo "ENV_ID=a6ea8ce7-6d5f-41ee-a802-5505e8833854" >> $GITHUB_OUTPUT
+          echo "ORG_ID=a6ea8ce7-6d5f-41ee-a802-5505e8833854" >> $GITHUB_OUTPUT
+          echo "ENV_ID=2c6f18bb-03e2-4874-a489-7216df5b5bc2" >> $GITHUB_OUTPUT
 
       - name: search
         id: search
@@ -109,11 +109,11 @@ jobs:
             -v "$(pwd)":/registration \
             -u $UID mulesoft/flex-gateway \
             registration create \
-            --client-id=${{steps.vault.outputs.CLIENT_ID}} \
-            --client-secret=${{steps.vault.outputs.CLIENT_SECRET}} \
-            --environment=${{steps.vault.outputs.ENV_ID}} \
+            --client-id="${{steps.vault.outputs.CLIENT_ID}}" \
+            --client-secret="${{steps.vault.outputs.CLIENT_SECRET}}" \
+            --environment="${{steps.vault.outputs.ENV_ID}}" \
             --connected=true \
-            --organization=${{steps.vault.outputs.ORG_ID}} \
+            --organization="${{steps.vault.outputs.ORG_ID}}" \
             --output-directory=/registration \
             "${{steps.search.outputs.fgw-name}}"
 
