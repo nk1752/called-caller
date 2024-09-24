@@ -1,0 +1,37 @@
+name: vault
+
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+env:
+  # Use docker.io for Docker Hub if empty
+  RENEW: true
+  ID: 1
+  NAME: "rashida"
+  BG: "blue"
+  ENV: "dev"
+
+jobs:
+  Variables:
+    
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read # read|write|none
+      id-token: write # read|write|none
+      
+    steps:
+      # write registration.yaml file to hashicorp vault
+      - name: test kv
+        run: |
+          vault kv --help
+
+
+      
