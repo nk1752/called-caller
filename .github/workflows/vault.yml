@@ -45,7 +45,7 @@ jobs:
           
       - name: kv2 read
         run: |
-          vault kv get secret/data/poc nadeem
+          vault kv get -mount=secret nadeem
           
         env:
           VAULT_ADDR: ${{ steps.vault.outputs.vault_addr }}
