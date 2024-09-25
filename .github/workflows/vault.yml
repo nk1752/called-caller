@@ -34,10 +34,10 @@ jobs:
         with:
           url: "${{ secrets.VAULT_ADDR }}"
           token: "${{ secrets.VAULT_TOKEN }}"
-         # method: "write"
+          method: "write"
           namespace: "admin"
           secrets: |
-            secret/data/poc nadeem | nadeem
+            secret/data/poc sec1="abc"
 
           
      
