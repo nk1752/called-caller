@@ -28,17 +28,19 @@ jobs:
       id-token: write # read|write|none
       
     steps:
-      - name: vault-action
-        uses: hashicorp/vault-action@v2
+      - name: pull secrets from vault
+        uses: hashicorp/vault-action@v3.0.0
         with:
           url: "${{ secrets.VAULT_ADDR }}"
           token: "${{ secrets.VAULT_TOKEN }}"
-          
+         # method: "write"
+          namespace: "admin"
+          secrets: |
+            secret/data/poc nadeem | nadeem
 
-      # write registration.yaml file to hashicorp vault
-      - name: test kv
-        run: |
-          vault kv --help
+          
+      -  run: |
+          vault kv help
 
 
       
