@@ -36,6 +36,8 @@ jobs:
           token: "${{ secrets.VAULT_TOKEN }}"
           #method: "write"
           namespace: "admin"
+          secrets: |
+            secret/data/poc nadeem
       
       - uses: eLco/setup-vault@v1
         with:
@@ -43,7 +45,7 @@ jobs:
           
       - name: kv2 read
         run: |
-          vault kv --help
+          vault kv get secret/data/poc nadeem
           
         env:
           VAULT_ADDR: ${{ steps.vault.outputs.vault_addr }}
