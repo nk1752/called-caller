@@ -37,7 +37,7 @@ jobs:
           method: "write"
           namespace: "admin"
           secrets: |
-            secret/data/poc sec1="abc"
+            secret/data/poc "nadeem=abc"
 
           
      
