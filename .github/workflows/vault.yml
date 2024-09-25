@@ -34,15 +34,19 @@ jobs:
         with:
           url: "${{ secrets.VAULT_ADDR }}"
           token: "${{ secrets.VAULT_TOKEN }}"
-          method: "write"
+          #method: "write"
           namespace: "admin"
           secrets: |
-            secret/data/poc "nadeem=abc"
+            secret/data/poc nadeem | NADEEM
 
           
      
       - name: print secrets
         run: |
-          echo "secrets: ${{ steps.vault.outputs.nadeem }}"
+          echo "secrets: ${{ steps.vault.outputs.NADEEM }}"
+
+      - name: kv
+        run: |
+          vault kv get secret/poc nadeem
           
       
