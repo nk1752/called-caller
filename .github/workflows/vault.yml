@@ -37,7 +37,7 @@ jobs:
           method: "write"
           namespace: "admin"
           secrets: |
-            -mount=secret/data/poc nadeem="nadeem"
+            nadeem="nadeem" secret/data/poc/secret1
       
       - uses: eLco/setup-vault@v1
         with:
