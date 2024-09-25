@@ -36,20 +36,8 @@ jobs:
           token: "${{ secrets.VAULT_TOKEN }}"
           #method: "write"
           namespace: "admin"
-          secrets: |
-            secret/data/poc nadeem | NADEEM
-
-          
-     
-      - name: print secrets
-        run: |
-          echo "secrets: ${{ steps.vault.outputs.NADEEM }}"
-
-      - uses: eLco/setup-vault@v1  # Use the 'setup-vault-cli' action
-        
-
-      - name: kv
-        run: |
-          vault kv get secret/poc nadeem
+      - run: |
+            vault kv --help
+      
           
       
