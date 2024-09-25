@@ -33,8 +33,7 @@ jobs:
         with:
           url: "${{ secrets.VAULT_ADDR }}"
           token: "${{ secrets.VAULT_TOKEN }}"
-          method: write
-          namespace: "admin"
+          
 
       # write registration.yaml file to hashicorp vault
       - name: test kv
