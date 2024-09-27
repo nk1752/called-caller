@@ -63,7 +63,8 @@ jobs:
 
             if [[ "$key" == ${{env.obj}} ]]; then
               
-              # get the value of the key
+              # get the value of the key and convert it to lowercase
+              oper
               oper=$(jq -r ".$key.oper | ascii_downcase"  config.json )
               echo "oper=$oper" >> $GITHUB_OUTPUT
               bg=$(jq -r ".$key.bg" config.json)
