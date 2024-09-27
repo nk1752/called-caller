@@ -64,7 +64,7 @@ jobs:
             if [[ "$key" == ${{env.obj}} ]]; then
               
               # get the value of the key
-              oper=$(jq -r ".$key.oper" config.json | ascii_downcase )
+              oper=$(jq -r ".$key.oper | ascii_downcase"  config.json )
               echo "oper=$oper" >> $GITHUB_OUTPUT
               bg=$(jq -r ".$key.bg" config.json)
               echo "bg=$bg" >> $GITHUB_OUTPUT
