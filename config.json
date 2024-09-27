@@ -1,6 +1,6 @@
 {
   "fgw1": {
-    "oper": "register",
+    "oper": "RegisTer",
     "bg": "accounts",
     "env": "dev",
     "size": "small",
