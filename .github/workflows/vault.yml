@@ -7,9 +7,9 @@ name: vault
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
+  # push:
+  #   branches:
+  #     - main
 
 env:
   # Use docker.io for Docker Hub if empty
@@ -46,10 +46,7 @@ jobs:
       - name: kv2 read
         run: |
           vault kv --help 
-        env:
-          VAULT_ADDR: ${{ steps.vault.outputs.vault_addr }}
-          VAULT_TOKEN: ${{ steps.vault.outputs.vault_token }}
-          VAULT_NAMESPACE: ${{ steps.vault.outputs.vault_namespace }}
+          vault kv get secret/data/poc/secret1
 
           
       

@@ -2,6 +2,9 @@ name: json testing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -61,7 +64,7 @@ jobs:
             if [[ "$key" == ${{env.obj}} ]]; then
               
               # get the value of the key
-              oper=$(jq -r ".$key.oper" config.json)
+              oper=$(jq -r ".$key.oper" config.json | ascii_downcase )
               echo "oper=$oper" >> $GITHUB_OUTPUT
               bg=$(jq -r ".$key.bg" config.json)
               echo "bg=$bg" >> $GITHUB_OUTPUT

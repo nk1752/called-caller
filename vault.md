@@ -1,3 +1,5 @@
+# login
+
 export VAULT_ADDR="https://nk1752-cluster-public-vault-55c83db1.9e78ed07.z1.hashicorp.cloud:8200";
 export VAULT_NAMESPACE="admin"
 
