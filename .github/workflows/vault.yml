@@ -55,7 +55,7 @@ jobs:
             --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
             $VAULT_ADDR/v1/secret/data/sample-secret | jq -r ".data"
 
-          echo "write secret using API"
+          echo "*** write secret using API"
 
           cat <<EOF > payload2.json
           {
@@ -78,4 +78,10 @@ jobs:
             --header "X-Vault-Namespace: admin" \
             --data @payload.json \
             $VAULT_ADDR/v1/secret/data/test/webapp | jq -r ".data"
+
+          echo "*** read back secret"
+          curl --header "X-Vault-Token: $VAULT_TOKEN" \
+            --header "X-Vault-Namespace: admin" \
+            $VAULT_ADDR/v1/secret/data/test/webapp | jq -r ".data"
+
 
