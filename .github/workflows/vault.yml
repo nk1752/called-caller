@@ -82,6 +82,8 @@ jobs:
           echo "*** read back secret"
           curl --header "X-Vault-Token: $VAULT_TOKEN" \
             --header "X-Vault-Namespace: admin" \
-            $VAULT_ADDR/v1/secret/data/test/webapp | jq -r ".data"
+            $VAULT_ADDR/v1/secret/data/test/webapp > mysecret.json
+
+          cat mysecret.json
 
 
