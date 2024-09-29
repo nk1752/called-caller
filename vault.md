@@ -10,3 +10,8 @@ export VAULT_TOKEN=$(curl -s --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
      curl -s --header "X-Vault-Token: $VAULT_TOKEN" \
     --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
     $VAULT_ADDR/v1/secret/data/sample-secret | jq -r ".data"
+
+
+# service principal
+client_id= RRhPGhGrjPiELAqGpKQEUFkbYtSTzver
+client_service=hM05-TMclo7Tr1UYmxN2gIM2khRwZ3rcVQvEO-hKp5VcgC6bqR0K1YaPYyu3bQvM

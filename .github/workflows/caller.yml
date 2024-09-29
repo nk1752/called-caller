@@ -10,6 +10,6 @@ permissions:
 
 jobs:
     registration-job1:
-      uses: ./.github/workflows/create-reg.yml
+      uses: ./.github/workflows/create-reg-reusable.yml
       with:
         obj: "fgw3"
