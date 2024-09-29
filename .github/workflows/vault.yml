@@ -48,7 +48,7 @@ jobs:
         run: |
           curl -s -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
             --request POST --data '{"role_id": "48b28a05-6cb2-359c-80f5-4f39548c3eb0", "secret_id": "24a18eea-e494-2f19-6816-2305eb114a63"}' \
-            ${{env.VAULT_ADDR}}/v1/auth/approle/login > login.json
+            ${{env.VAULT_ADDR}}/v1/auth/approle/login > vault_token.json
 
           jq . vault_token.json
 
