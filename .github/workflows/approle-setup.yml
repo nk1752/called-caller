@@ -46,7 +46,8 @@ jobs:
         run: |
           curl \
             -H "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
+            --header "X-Vault-Namespace: admin" \
             --request GET \
-            ${{env.VAULT_ADDR}}/v1/admin/secret/data/sample-secret > secret.json
+            ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secret.json
 
           jq . secret.json
