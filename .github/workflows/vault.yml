@@ -91,5 +91,8 @@ jobs:
           curl \
             --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
-            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r "."
+            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp > secrets.json
+
+          chmod 777 secrets.json
+          cat secrets.json
 
