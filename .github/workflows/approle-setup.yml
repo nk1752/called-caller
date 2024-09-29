@@ -50,4 +50,4 @@ jobs:
             --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
             --header "Content-Type: application/json" \  
             --data @payload_login.json \
-            ${{env.VAULT_ADDR}}/v1/admin/kv/data/test1 | jq -r ".data"
+            ${{env.VAULT_ADDR}}/v1/admin/secret/data/test1
