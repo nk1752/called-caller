@@ -88,7 +88,8 @@ jobs:
 
       - name: read back secret"
         run: |
-          curl --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
+          curl \
+            --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
-            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r ".data"
+            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r ".data.api-key"
 
