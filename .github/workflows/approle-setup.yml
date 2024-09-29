@@ -48,6 +48,6 @@ jobs:
             -H "X-Vault-Token: $CLIENT_TOKEN" \
             -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
             -X GET \
-            ${{env.VAULT_ADDR}}/v1/secret/data/poc > secret.json
+            ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secret.json
 
           jq . secret.json
