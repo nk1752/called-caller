@@ -55,8 +55,15 @@ jobs:
             --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
             $VAULT_ADDR/v1/secret/data/sample-secret | jq -r ".data"
 
-          echo "write secret using CLI"
-          vault kv put secret/test/webapp api-key="ABC0DEFG9876"
+          echo "write secret using API"
+
+          cat <<EOF > payload2.json
+          {
+            "data": {
+              "api-key": "ABC0DEFG9876"
+            }
+          }
+          EOF
 
           
           tee payload.json <<EOF
