@@ -39,6 +39,9 @@ jobs:
       #     secrets: |
       #       secret/data/poc/secret1 nadeem | nadeem
 
+      - name: checkout repo
+        uses: actions/checkout@v3.0.0
+
       - uses: eLco/setup-vault@v1
         with:
           vault_version: "1.12.0"
