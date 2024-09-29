@@ -18,15 +18,16 @@ env:
   NAME: "rashida"
   BG: "blue"
   ENV: "dev"
+  VAULT_ADDR: "https://nk1752-cluster-public-vault-55c83db1.9e78ed07.z1.hashicorp.cloud:8200"
+  VAULT_NAMESPACE: "admin"
 
 jobs:
   Variables:
-    
     runs-on: ubuntu-latest
     permissions:
       contents: read # read|write|none
       id-token: write # read|write|none
-      
+
     steps:
       # - name: pull secrets from vault
       #   id: vault
@@ -37,31 +38,30 @@ jobs:
       #     namespace: "admin"
       #     secrets: |
       #       secret/data/poc/secret1 nadeem | nadeem
-      
+
       - uses: eLco/setup-vault@v1
         with:
           vault_version: "1.12.0"
 
       - name: login to vault
+        id: login
         run: |
-          VAULT_ADDR="https://nk1752-cluster-public-vault-55c83db1.9e78ed07.z1.hashicorp.cloud:8200";
-          VAULT_NAMESPACE="admin"
+
 
           VAULT_TOKEN=$(curl -s --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
             --request POST --data '{"role_id": "10e4832f-e504-1732-97d2-5aa1410c9c81", "secret_id": "9ff611aa-0856-8117-3cd2-4d7d62cccee3"}' \
             $VAULT_ADDR/v1/auth/approle/login | jq -r '.auth.client_token' )
 
-          echo $VAULT_TOKEN
-          
-      - name: read secrets using approle
-        run: | 
-          echo $VAULT_TOKEN
-          echo $VAULT_ADDR
-          echo $VAULT_NAMESPACE
+          echo "VAULT_TOKEN=$VAULT_TOKEN" >> $GITHUB_OUTPUT
 
-          # curl -s --header "X-Vault-Token: $VAULT_TOKEN" \
-          #   --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
-          #   $VAULT_ADDR/v1/secret/data/sample-secret | jq -r ".data"
+      - name: read secrets using approle
+        run: |
+          echo VAULT_TOKEN -> ${{ steps.login.outputs.VAULT_TOKEN }}
+
+          curl -s \
+              --header "X-Vault-Token: ${{ steps.login.outputs.VAULT_TOKEN }}" \
+              --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+              ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret | jq -r ".data"
 
       - name: write secret using API"
         run: |
@@ -74,7 +74,7 @@ jobs:
           }
           EOF
 
-          
+
           tee payload.json <<EOF
           {
             "data": {
@@ -83,17 +83,15 @@ jobs:
           }
           EOF
 
-          curl --header "X-Vault-Token: $VAULT_TOKEN" \
+          curl --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
             --data @payload.json \
-            $VAULT_ADDR/v1/secret/data/test/webapp | jq -r ".data"
+            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r ".data"
 
       - name: read back secret"
         run: |
-          curl --header "X-Vault-Token: $VAULT_TOKEN" \
+          curl --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
-            $VAULT_ADDR/v1/secret/data/test/webapp > mysecret.json
+            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp > mysecret.json
 
           cat mysecret.json
-
-
