@@ -47,7 +47,7 @@ jobs:
           curl \
             --request POST \
             --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
-            --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-            --header "Content-Type: application/json" \  
+            --header "X-Vault-Namespace: admin" \
+            --header "Content-Type: application/json" \
             --data @payload_login.json \
-            ${{env.VAULT_ADDR}}/v1/admin/secret/data/test1
+            ${{env.VAULT_ADDR}}/v1/admin/kv/data/test1 | jq -r ".data"
