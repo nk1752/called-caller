@@ -36,7 +36,7 @@ jobs:
           token: "${{ secrets.VAULT_TOKEN }}"
           namespace: "admin"
           secrets: |
-            secret/data/poc/secret1 
+            secret/data/poc/secret1 nadeem | nadeem
       
       - uses: eLco/setup-vault@v1
         with:
