@@ -62,10 +62,10 @@ jobs:
           curl \
             --request POST \
             --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
-            --header "X-Vault-Namespace: admin" \
+            --header "X-Vault-Namespace: admin/nk" \
             --header "Content-Type: application/json" \
             --data @payload_login.json \
-            ${{env.VAULT_ADDR}}/v1/secret/data/yaml1 | jq -r ".data"
+            ${{env.VAULT_ADDR}}/v1/admin/nk/kv/data/test1 | jq -r ".data"
 
       # - name: read secrets using approle
       #   run: |
