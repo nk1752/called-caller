@@ -41,3 +41,13 @@ jobs:
           jq . vault_token.json
 
           echo "CLIENT_TOKEN=$(jq -r '.auth.client_token' vault_token.json)" >> $GITHUB_OUTPUT
+
+      - name: read secret
+        run: |
+          curl \
+            -H "X-Vault-Token: $CLIENT_TOKEN" \
+            -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+            -X GET \
+            ${{env.VAULT_ADDR}}/v1/secret/data/poc > secret.json
+
+          jq . secret.json
