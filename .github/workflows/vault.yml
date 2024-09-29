@@ -68,7 +68,7 @@ jobs:
               ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secrets.json
 
           jq . secrets.json
-          jq -r '.data.first_secret' secrets.json
+          jq -r '.data.first-secret' secrets.json
 
       - name: write secret using API"
         run: |
