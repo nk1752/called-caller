@@ -65,7 +65,10 @@ jobs:
           curl -s \
               --header "X-Vault-Token: ${{ steps.login.outputs.VAULT_TOKEN }}" \
               --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-              ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret | jq . | jq -r ".data.first.secret"
+              ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secrets.json
+
+          jq . secrets.json
+          jq -r '.data.first_secret' secrets.json
 
       - name: write secret using API"
         run: |
