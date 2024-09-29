@@ -49,3 +49,9 @@ EOF
 ## cleanup
 
 > unset VAULT_TOKEN
+
+
+
+# VAULT_TOKEN=$(curl -s -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+          #   --request POST --data '{"role_id": "10e4832f-e504-1732-97d2-5aa1410c9c81", "secret_id": "9ff611aa-0856-8117-3cd2-4d7d62cccee3"}' \
+          #   ${{env.VAULT_ADDR}}/v1/auth/approle/login | jq -r '.auth.client_token' )
