@@ -50,5 +50,4 @@ jobs:
             -H "X-Vault-Namespace: admin" \
             -H "Content-Type: application/json" \
             -d @payload_approle.json \
-            
             ${{env.VAULT_ADDR}}/v1/admin/kv/data/test1 | jq -r ".data"
