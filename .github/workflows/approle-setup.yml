@@ -42,4 +42,12 @@ jobs:
 
           echo "CLIENT_TOKEN=$(jq -r '.auth.client_token' vault_token.json)" >> $GITHUB_OUTPUT
 
- 
+      - name: write secret using API"
+        run: |
+          curl \
+            
+            --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
+            --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+              
+            --data @payload_login.json \
+            ${{env.VAULT_ADDR}}/v1/admin/kv/data/test1 | jq -r ".data"
