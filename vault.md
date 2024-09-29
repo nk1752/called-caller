@@ -23,14 +23,8 @@ Before a client can interact with Vault, it must authenticate against an auth me
 As with secrets engines and policies, auth methods are tied to a namespace. The auth method enabled on the admin namespace is only available to the admin namespace and generates a token available to use against the admin namespace.
 
 > vault read auth/approle/role/actionsapp/role-id
-role_id=48b28a05-6cb2-359c-80f5-4f39548c3eb0
-
 > vault write -force auth/approle/role/actionsapp/secret-id
-Key                Value                               
-secret_id          24a18eea-e494-2f19-6816-2305eb114a63
-secret_id_accessor 7ddba078-5eae-f90d-c1c5-fb88719e12ac
-secret_id_num_uses 0                                   
-secret_id_ttl  
+
 
 $ tee payload_login.json <<"EOF"
 {
