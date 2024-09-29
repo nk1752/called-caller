@@ -59,7 +59,8 @@ jobs:
 
       - name: write secret using API"
         run: |
-          curl POST \
+          curl \
+            --request POST \
             --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
             --header "Content-Type: application/yaml" \
