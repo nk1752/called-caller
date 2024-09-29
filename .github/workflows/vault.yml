@@ -57,23 +57,23 @@ jobs:
 
           echo "CLIENT_TOKEN=$(jq -r '.auth.client_token' vault_token.json)" >> $GITHUB_OUTPUT
 
-      - name: write secret using API"
-        run: |
-          curl \
-            --request POST \
-            --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
-            --header "X-Vault-Namespace: admin/nk" \
-            --header "Content-Type: application/json" \
-            --data @payload_login.json \
-            ${{env.VAULT_ADDR}}/v1/admin/nk/kv/data/test1 | jq -r ".data"
-
-      # - name: read secrets using approle
+      # - name: write secret using API"
       #   run: |
-      #     echo CLIENT_TOKEN -> ${{ steps.login.outputs.CLIENT_TOKEN }}
+      #     curl \
+      #       --request POST \
+      #       --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
+      #       --header "X-Vault-Namespace: admin/nk" \
+      #       --header "Content-Type: application/json" \
+      #       --data @payload_login.json \
+      #       ${{env.VAULT_ADDR}}/v1/admin/nk/kv/data/test1 | jq -r ".data"
 
-      #     curl -s \
-      #         -H "X-Vault-Token: ${{ steps.login.outputs.CLIENT_TOKEN }}" \
-      #         -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-      #         ${{env.VAULT_ADDR}}/v1/secret/data/yaml1 | jq -r ".data"
+      - name: read secrets using approle
+        run: |
+          echo CLIENT_TOKEN -> ${{ steps.login.outputs.CLIENT_TOKEN }}
+
+          curl -s \
+              -H "X-Vault-Token: ${{ steps.login.outputs.CLIENT_TOKEN }}" \
+              -H "X-Vault-Namespace: admin/nk" \
+              ${{env.VAULT_ADDR}}/v1/secret/data/name | jq -r ".data"
 
 
