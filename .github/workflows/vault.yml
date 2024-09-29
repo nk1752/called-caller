@@ -91,5 +91,5 @@ jobs:
           curl \
             --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
-            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r ".data.api-key"
+            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r "."
 
