@@ -43,7 +43,7 @@ jobs:
         with:
           vault_version: "1.12.0"
 
-      - name: login to vault
+      - name: login to vault using approle
         id: login
         run: |
           # VAULT_TOKEN=$(curl -s -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
@@ -51,57 +51,30 @@ jobs:
           #   ${{env.VAULT_ADDR}}/v1/auth/approle/login | jq -r '.auth.client_token' )
 
           curl -s -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-            --request POST --data '{"role_id": "10e4832f-e504-1732-97d2-5aa1410c9c81", "secret_id": "9ff611aa-0856-8117-3cd2-4d7d62cccee3"}' \
+            --request POST --data '{"role_id": "48b28a05-6cb2-359c-80f5-4f39548c3eb0", "secret_id": "24a18eea-e494-2f19-6816-2305eb114a63"}' \
             ${{env.VAULT_ADDR}}/v1/auth/approle/login > login.json
 
-          jq . login.json
+          jq . vault_token.json
 
-          echo "VAULT_TOKEN=$(jq -r '.auth.client_token' login.json)" >> $GITHUB_OUTPUT
-
-      - name: read secrets using approle
-        run: |
-          echo VAULT_TOKEN -> ${{ steps.login.outputs.VAULT_TOKEN }}
-
-          curl -s \
-              --header "X-Vault-Token: ${{ steps.login.outputs.VAULT_TOKEN }}" \
-              --header "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-              ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secrets.json
-
-          jq . secrets.json
-          jq -r '.data.data.first-secret' secrets.json
+          echo "CLIENT_TOKEN=$(jq -r '.auth.client_token' vault_token.json)" >> $GITHUB_OUTPUT
 
       - name: write secret using API"
         run: |
-
-          cat <<EOF > payload2.json
-          {
-            "data": {
-              "api-key": "ABC0DEFG9876"
-            }
-          }
-          EOF
-
-
-          tee payload.json <<EOF
-          {
-            "data": {
-              "api-key": "ABC0DEFG9876"
-            }
-          }
-          EOF
-
-          curl --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
+          curl POST \
+            --header "X-Vault-Token: ${{steps.login.outputs.CLIENT_TOKEN}}" \
             --header "X-Vault-Namespace: admin" \
-            --data @payload.json \
-            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp | jq -r ".data"
+            --header "Content-Type: application/yaml" \
+            --data @registration-old.yaml \
+            ${{env.VAULT_ADDR}}/v1/secret/data/yaml1 | jq -r ".data"
 
-      - name: read back secret"
+      - name: read secrets using approle
         run: |
-          curl \
-            --header "X-Vault-Token: ${{steps.login.outputs.VAULT_TOKEN}}" \
-            --header "X-Vault-Namespace: admin" \
-            ${{env.VAULT_ADDR}}/v1/secret/data/test/webapp > secrets.json
+          echo CLIENT_TOKEN -> ${{ steps.login.outputs.CLIENT_TOKEN }}
 
-          chmod 777 secrets.json
-          cat secrets.json
+          curl -s \
+              -H "X-Vault-Token: ${{ steps.login.outputs.CLIENT_TOKEN }}" \
+              -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+              ${{env.VAULT_ADDR}}/v1/secret/data/yaml1 > registration.yaml
+
+          cat registration.yaml
 
