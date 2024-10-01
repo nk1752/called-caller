@@ -36,4 +36,4 @@ jobs:
 
       - name: read name field
         run: |
-          jq .name config.json
+          jq -r .[name] config.json
