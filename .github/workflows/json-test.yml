@@ -34,8 +34,14 @@ jobs:
         run: |
           jq . config.json
 
-      - name: iterate
+      - name: base64 iterate
         run: |
           for i in $(jq -r '.[] | @base64' config.json); do
             echo $i | base64 --decode
+          done
+
+      - name: iterate over json
+        run: |
+          for i in $(jq -r '.[]' config.json); do
+            echo $i | jq .
           done
