@@ -52,8 +52,11 @@ jobs:
               echo "name: $bg"
 
               echo "fgw-$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}" >> GITHUB_OUTPUT
-              echo "fgw-name: $fgw_name"
 
               break
             fi  
           done # end of for loop
+
+      - name: echo
+        run: |
+          echo "fgw_name: ${{ steps.json.outputs.fgw_name }}"
