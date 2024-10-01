@@ -7,9 +7,6 @@ name: vault
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - main
 
 env:
   VAULT_ADDR: "https://nk1752-cluster-public-vault-55c83db1.9e78ed07.z1.hashicorp.cloud:8200"
@@ -34,8 +31,9 @@ jobs:
       - name: login to vault using approle
         id: login
         run: |
-          curl -s -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
-            --request POST --data '{"role_id": "fac0c25b-9db2-5a65-5363-a7dafc1816b3", "secret_id": "5f56705a-33f1-ee2d-7b08-4ef736f68af9"}' \
+          curl -s \
+            -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+            -X POST --data '{"role_id": "fac0c25b-9db2-5a65-5363-a7dafc1816b3", "secret_id": "5f56705a-33f1-ee2d-7b08-4ef736f68af9"}' \
             ${{env.VAULT_ADDR}}/v1/auth/approle/login > vault_token.json
 
           jq . vault_token.json
@@ -48,6 +46,18 @@ jobs:
             -H "X-Vault-Token: $CLIENT_TOKEN" \
             -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
             -X GET \
+            ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secret.json
+
+          jq . secret.json
+
+      - name: write secret
+        run: |
+          curl \
+            -H "X-Vault-Token: $CLIENT_TOKEN" \
+            -H "X-Vault-Namespace: ${{env.VAULT_NAMESPACE}}" \
+            -H "Content-Type: application/ymal" \
+            -X POST \
+            --data @registration.yaml \
             ${{env.VAULT_ADDR}}/v1/secret/data/sample-secret > secret.json
 
           jq . secret.json
