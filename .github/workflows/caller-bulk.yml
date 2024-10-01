@@ -16,9 +16,10 @@ jobs:
       strategy:
         matrix:
           env: ["dev", "prod"]
-          inputs: ["fgw_1", "fgw_2", "fgw_3"]
+          obj: ["fgw_1", "fgw_2", "fgw_3"]
+          env_name: ["np-a", "np-b", "np-c"]
 
       uses: ./.github/workflows/called-bulk.yml
       with:
         env: ${{ matrix.env }}
-        inputs: ${{ matrix.inputs }}
+        obj: ${{ matrix.obj }}

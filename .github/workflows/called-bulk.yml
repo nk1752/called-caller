@@ -6,9 +6,13 @@ on:
       env:
         type: string
         required: true
-      inputs:
+      obj:
         type: string
         required: true
+      env_name:
+        type: string
+        required: true
+        
 
 jobs:
   reuse-job:
@@ -17,7 +21,8 @@ jobs:
     steps:
       - name: print inputs
         run: |
-          echo "inputs: ${{ inputs.inputs }}"
+          echo "obj: ${{ inputs.obj }}"
           echo "env: ${{ inputs.env }}"
+          echo "env_name: ${{ inputs.env_name }}"
           
           
