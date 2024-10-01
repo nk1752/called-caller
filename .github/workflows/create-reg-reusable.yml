@@ -45,7 +45,9 @@ jobs:
           echo "name lowercase: $bg_lower"
           env=$(jq -r ".${{inputs.obj}}.env" config.json)
 
-          fgw_name='fgw-'$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
+          size=$(echo ${{inputs.size}} | tr '[:upper:]' '[:lower:]')
+
+          fgw_name='fgw-'$bg-${{inputs.env}}-$size-${{inputs.no}}
           echo "fgw_name: $fgw_name"
 
           echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
