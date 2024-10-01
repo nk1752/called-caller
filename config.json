@@ -1,20 +1,18 @@
-[
-  {
-    "name": "default",
-    "type": "mysql",
-    "host": "localhost",
-    "port": 3306
+{
+  "fgw_1":{
+    "name": "RegionsBank",
+    "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "QA": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "AD_GROUP": "RegionsBank"
   },
-  {
-    "name": "development",
-    "type": "mysql",
-    "host": "localhost",
-    "port": 3306
-  },
-  {
-    "name": "production",
-    "type": "mysql",
-    "host": "localhost",
-    "port": 3306
+  "fgw_2":{
+    "name": "BLZE",
+    "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "QA": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
+    "AD_GROUP": "BLZE"
   }
-]
+}

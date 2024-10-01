@@ -6,6 +6,17 @@ on:
       obj:
         type: string
         required: true
+      env:
+        type: string
+        required: true
+      size:
+        type: string
+        required: false
+        default: "small"
+      no:
+        type: string
+        required: false
+        default: "1"
 
 jobs:
   register-renew:
@@ -24,49 +35,8 @@ jobs:
           echo "reading config"
           jq . config.json
 
-      - name: read secrets
-        run: |
-          VAULT_ADDR="https://nk1752-cluster-public-vault-55c83db1.9e78ed07.z1.hashicorp.cloud:8200";
-          VAULT_NAMESPACE="admin"
-
-          VAULT_TOKEN=$(curl -s --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
-            --request POST --data '{"role_id": "10e4832f-e504-1732-97d2-5aa1410c9c81", "secret_id": "9ff611aa-0856-8117-3cd2-4d7d62cccee3"}' \
-            $VAULT_ADDR/v1/auth/approle/login | jq -r '.auth.client_token' )
-
-          curl -s --header "X-Vault-Token: $VAULT_TOKEN" \
-            --header "X-Vault-Namespace: $VAULT_NAMESPACE" \
-            $VAULT_ADDR/v1/secret/data/sample-secret | jq -r ".data"
-
-      # Set up BuildKit Docker container builder to be able to build
-      # multi-platform images and export cache
-      # https://github.com/docker/setup-buildx-action
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@f95db51fddba0c2d1ec667646a06c2ce06100226 # v3.0.0
-
-      - name: pull image
-        run: |
-          docker pull mulesoft/flex-gateway:latest
-
-      # list docker images
-      - name: list docker images
-        run: |
-          docker images
-
-      # check os version on ubuntu
-      - name: check os version
-        run: |
-          cat /etc/os-release
-
-      - name: get secrets
-        id: vault
-        run: |
-          echo "CLIENT_ID=b95726291f564ae2942ac2c4ecc46311" >> $GITHUB_OUTPUT
-          echo "CLIENT_SECRET=59dB6D7A84bd442bAfE7422233a82902" >> $GITHUB_OUTPUT
-          echo "ORG_ID=a6ea8ce7-6d5f-41ee-a802-5505e8833854" >> $GITHUB_OUTPUT
-          echo "ENV_ID=2c6f18bb-03e2-4874-a489-7216df5b5bc2" >> $GITHUB_OUTPUT
-
       - name: search
-        id: search
+        id: json
         run: |
           # iterate over the config.json elements
           for key in $(jq -r 'keys[]' config.json); do
@@ -78,106 +48,11 @@ jobs:
             then  
               echo "found match! $oper ${{inputs.obj}}"
 
-              jq -r .$key.oper config.json
+              bg=$(jq -r ".$key.name" config.json)
+              echo "name: $bg"
 
-              oper=$(jq -r ".$key.oper" config.json)
-              echo "oper=$oper" >> $GITHUB_OUTPUT
-              bg=$(jq -r ".$key.bg" config.json)
-              echo "bg=$bg" >> $GITHUB_OUTPUT
-              env=$(jq -r ".$key.env" config.json)
-              echo "env=$env" >> $GITHUB_OUTPUT
-              size=$(jq -r ".$key.size" config.json)
-              echo "size=$size" >> $GITHUB_OUTPUT
-              no=$(jq -r ".$key.no" config.json)
-              echo "no=$no" >> $GITHUB_OUTPUT
-              fgw=fgw-$bg-$env-$size-$no
-              echo "fgw-name=$fgw" >> $GITHUB_OUTPUT
-              echo "### Flex Gateway Name: $fgw" >> $GITHUB_STEP_SUMMARY
+              fgw-name=fgw-$bg-${{inputs.size}}-${{inputs.no}}
 
               break
             fi  
           done # end of for loop
-
-      - name: check variables
-        run: |
-          echo oper=${{steps.search.outputs.oper}}
-          echo bg=${{steps.search.outputs.bg}}
-          echo env=${{steps.search.outputs.env}}
-          echo size=${{steps.search.outputs.size}}
-          echo no=${{steps.search.outputs.no}}
-          echo fgw-name=${{steps.search.outputs.fgw-name}}
-
-          echo client_id=${{steps.vault.outputs.CLIENT_ID}}
-          echo client_secret=${{steps.vault.outputs.CLIENT_SECRET}}
-          echo org_id=${{steps.vault.outputs.ORG_ID}}
-          echo env_id=${{steps.vault.outputs.ENV_ID}}
-
-      - name: check for register
-        if: ${{steps.search.outputs.oper == 'register'}}
-        run: |
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo fgw-name=${{steps.search.outputs.fgw-name}}
-
-          sudo docker run --entrypoint flexctl \
-            -v "$(pwd)":/registration \
-            -u $UID mulesoft/flex-gateway \
-            registration create \
-            --client-id="${{steps.vault.outputs.CLIENT_ID}}" \
-            --client-secret="${{steps.vault.outputs.CLIENT_SECRET}}" \
-            --environment="${{steps.vault.outputs.ENV_ID}}" \
-            --connected=true \
-            --organization="${{steps.vault.outputs.ORG_ID}}" \
-            --output-directory=/registration \
-            "${{steps.search.outputs.fgw-name}}"
-
-          cat registration.yaml
-
-      # inspect registration.yaml
-      - name: inspection
-        run: |
-          sudo docker run --entrypoint flexctl \
-            -v "$(pwd)":/registration \
-            -u $UID mulesoft/flex-gateway \
-            registration inspect --file=/registration/registration.yaml > expiry-date.yaml
-
-          cat expiry-date.yaml
-
-      - name: check for renew
-        if: ${{steps.search.outputs.oper == 'renew'}}
-        run: |
-          echo "oper=${{steps.search.outputs.oper}}"
-          echo fgw-name=${{steps.search.outputs.fgw-name}}
-
-          mkdir -p renew
-          ls -l
-
-          sudo docker run --entrypoint flexctl \
-            -v "$(pwd)/renew":/renew \
-            -v "$(pwd)":/registration \
-            -u $UID mulesoft/flex-gateway \
-            registration renew \
-            --client-id=${{steps.vault.outputs.CLIENT_ID}} \
-            --client-secret=${{steps.vault.outputs.CLIENT_SECRET}} \
-            --output-directory=/renew \
-            /registration/registration.yaml
-
-            cat renew/registration.yaml
-
-      - name: cleanup
-        run: |
-          echo "cleaning up..."
-          if [ -d "renew" ]; then
-            echo "renew directory exists"
-            rm -rf renew
-          else
-            echo "renew directory does not exist"
-          fi
-
-          if [ -f "registration.yaml" ]; then
-            echo "registration.yaml exists"
-            rm registration.yaml
-          else
-            echo "registration.yaml does not exist"
-          fi
-
-          ls -l

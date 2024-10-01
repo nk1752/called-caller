@@ -2,6 +2,9 @@ name: caller
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
   
 permissions:
   contents: read
@@ -12,4 +15,5 @@ jobs:
     registration-job1:
       uses: ./.github/workflows/create-reg-reusable.yml
       with:
-        obj: "fgw3"
+        obj: "fgw_1"
+        env: "dev"
