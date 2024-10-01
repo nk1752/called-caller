@@ -40,8 +40,8 @@ jobs:
             echo $i | base64 --decode
           done
 
-      - name: iterate over json
+      - name: iterate over json & print name
         run: |
-          for i in $(jq -r '.[]' config.json); do
-            echo $i | jq .
+          for i in $(jq -r '.[] | @base64' config.json); do
+            echo $i | base64 --decode | jq -r '.name'
           done
