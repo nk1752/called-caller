@@ -54,3 +54,10 @@ jobs:
         run: |
           echo "fgw_name: ${{ steps.json.outputs.fgw_name }}"
           echo "name: ${{ steps.json.outputs.bg }}"
+
+          echo "### flex name: ${{ steps.json.outputs.fgw_name }}" >> $GITHUB_STEP_SUMMARY
+
+          BIG="NADEEM"
+          # convert to lowercase
+          BIG_LOWER=$(echo $BIG | ascii_downcase)
+          echo "BIG_LOWER: $BIG_LOWER"
