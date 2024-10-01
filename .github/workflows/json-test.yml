@@ -41,6 +41,6 @@ jobs:
 
           # decode base64.json
           encodedStr=$(jq -r '.base64' base64.json)
-          echo "$encodedStr" | base64 -d > registration-old-decoded.yaml
+          echo $encodedStr | base64 -d 
 
-          jq . registration-old-decoded.yaml
+          
