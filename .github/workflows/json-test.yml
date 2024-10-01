@@ -33,3 +33,7 @@ jobs:
       - name: read confog.json
         run: |
           jq . config.json
+
+      - name: read name field
+        run: |
+          jq .name config.json
