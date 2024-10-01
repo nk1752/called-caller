@@ -1,30 +1,20 @@
-{
-  "fgw1": {
-    "oper": "RegisTer",
-    "bg": "accounts",
-    "env": "dev",
-    "size": "small",
-    "no": "1"
+[
+  {
+    "name": "default",
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306
   },
-  "fwg2": {
-    "oper": "bypass",
-    "bg": "bg1",
-    "env": "env1",
-    "size": "small",
-    "no": "1"
+  {
+    "name": "development",
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306
   },
-  "fgw3": {
-    "oper": "register",
-    "bg": "accounts",
-    "env": "qa",
-    "size": "small",
-    "no": "1"
-  },
-  "fgw4": {
-    "oper": "bypass",
-    "bg": "bg1",
-    "env": "env1",
-    "size": "small",
-    "no": "1"
+  {
+    "name": "production",
+    "type": "mysql",
+    "host": "localhost",
+    "port": 3306
   }
-}
+]

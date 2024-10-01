@@ -1,0 +1,47 @@
+name: base64 testing
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+env:
+  obj: "fgw1"
+
+jobs:
+  json-test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: echo
+        run: |
+          echo "caller send: ${{ env.obj }}"
+
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: check jq
+        run: |
+          jq --help
+
+      - name: base64 encode registration-old.yaml & save to base64
+        run: |
+          base64Value="$(base64 -w 0 registration-old.yaml)"
+          base64Key="base64"
+
+          echo '{"'$base64Key'": "'$base64Value'"}' > base64.json
+
+          encoded=$(jq -r '.base64' base64.json)
+          echo "encoded: $encoded"
+
+          # base64 decode encoded string
+          echo $encoded | base64 -d > registration-old.yaml
+
+          cat registration-old.yaml
+
+          
+
+          

@@ -30,21 +30,6 @@ jobs:
         run: |
           jq --help
 
-      - name: base64 encode registration-old.yaml & save to base64
+      - name: read confog.json
         run: |
-          base64Value="$(base64 -w 0 registration-old.yaml)"
-          base64Key="base64"
-
-          echo '{"'$base64Key'": "'$base64Value'"}' > base64.json
-
-          encoded=$(jq -r '.base64' base64.json)
-          echo "encoded: $encoded"
-
-          # base64 decode encoded string
-          echo $encoded | base64 -d > registration-old.yaml
-
-          cat registration-old.yaml
-
-          
-
-          
+          jq . config.json
