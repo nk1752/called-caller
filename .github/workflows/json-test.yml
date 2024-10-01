@@ -43,6 +43,8 @@ jobs:
           # base64 decode encoded string
           echo $encoded | base64 -d > registration-old.yaml
 
+          cat registration-old.yaml
+
           
 
           
