@@ -32,7 +32,7 @@ jobs:
 
       - name: base64 encode registration-old.yaml & save to base64
         run: |
-          base64Value="$(base64 -n registration-old.yaml)"
+          base64Value="$(base64 registration-old.yaml)"
           base64Key="base64"
 
           echo '{"'$base64Key'": "'$base64Value'"}' > base64.json
@@ -41,6 +41,6 @@ jobs:
 
           # decode base64.json
           encodedStr=$(jq -r '.base64' base64.json)
-          echo $encodedStr | base64 -d 
+          base64 -d <<< "$encodedStr" > registration-old-decoded.yaml 
 
           
