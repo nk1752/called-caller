@@ -38,27 +38,16 @@ jobs:
       - name: parse json
         id: json
         run: |
-          # iterate over the config.json elements
-          for key in $(jq -r 'keys[]' config.json); do
-            echo "*************************"
-            echo "key: $key"
-            echo "*************************"
-            
-            if [[ "$key" == ${{inputs.obj}} ]];
-            then  
-              echo "found match! $oper ${{inputs.obj}}"
+          bg=$(jq -r ".${{inputs.obj}}.name" config.json)
+          echo "name: $bg"
+          bg_lower=$(jq -r ".${{inputs.obj}}.name | ascii_downcase" config.json)
+          echo "name lowercase: $bg_lower"
+          env=$(jq -r ".${{inputs.obj}}.env" config.json)
 
-              bg=$(jq -r ".${{inputs.obj}}.name" config.json)
-              echo "name: $bg"
+          fgw_name='fgw-'$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
+          echo "fgw_name: $fgw_name"
 
-              fgw_name='fgw-'$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
-              echo "fgw_name: $fgw_name"
-
-              echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
-
-              break
-            fi  
-          done # end of for loop
+          echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
 
       - name: echo
         run: |
