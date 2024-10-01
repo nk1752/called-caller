@@ -39,22 +39,16 @@ jobs:
         id: json
         run: |
           bg=$(jq -r ".${{inputs.obj}}.name" config.json)
-          echo "bg=$bg" >> $GITHUB_OUTPUT
+          echo "name: $bg"
           bg_lower=$(jq -r ".${{inputs.obj}}.name | ascii_downcase" config.json)
-          echo "bg_lower=$bg_lower" >> $GITHUB_OUTPUT
+          echo "name lowercase: $bg_lower"
           env=$(jq -r ".${{inputs.obj}}.env" config.json)
-          echo "env=$env" >> $GITHUB_OUTPUT
-          size=$(jq -r ".${{inputs.obj}}.size | ascii_downcase" config.json)
-          echo "size=$size" >> $GITHUB_OUTPUT
 
-          fgw_name='fgw-'$bg_lower-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
+          fgw_name='fgw-'$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
+          echo "fgw_name: $fgw_name"
+
           echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
 
       - name: echo
         run: |
           echo "fgw_name: ${{ steps.json.outputs.fgw_name }}"
-          echo "env: ${{ steps.json.outputs.env }}"
-          echo "size: ${{ steps.json.outputs.size }}"
-          echo "no: ${{ steps.json.outputs.no }}"
-          echo "bg: ${{ steps.json.outputs.bg }}"
-          echo "bg_lower: ${{ steps.json.outputs.bg_lower }}"
