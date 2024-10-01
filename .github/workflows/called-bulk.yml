@@ -1,0 +1,23 @@
+name: called-bulk
+
+on:
+  workflow_call:
+    inputs:
+      env:
+        type: string
+        required: true
+      inputs:
+        type: string
+        required: true
+
+jobs:
+  reuse-job:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: print inputs
+        run: |
+          echo "inputs: ${{ inputs.inputs }}"
+          echo "env: ${{ inputs.env }}"
+          
+          

@@ -1,0 +1,24 @@
+name: caller bulk
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+  
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+    matrix-job:
+      strategy:
+        matrix:
+          env: ["dev", "prod"]
+          inputs: ["small", "1"]
+
+      uses: ./.github/workflows/called-bulk.yml
+      with:
+        env: ${{ matrix.env }}
+        inputs: ${{ matrix.inputs }}
