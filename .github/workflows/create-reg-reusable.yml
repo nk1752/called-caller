@@ -12,7 +12,7 @@ on:
       size:
         type: string
         required: false
-        default: "small"
+        default: "SMall"
       no:
         type: string
         required: false
@@ -57,7 +57,6 @@ jobs:
 
           echo "### flex name: ${{ steps.json.outputs.fgw_name }}" >> $GITHUB_STEP_SUMMARY
 
-          BIG="NADEEM"
           # convert to lowercase
-          BIG_LOWER=$(echo $BIG | tr '[:upper:]' '[:lower:]')
+          BIG_LOWER=$(echo ${{inputs.size}} | tr '[:upper:]' '[:lower:]')
           echo "BIG_LOWER: $BIG_LOWER"
