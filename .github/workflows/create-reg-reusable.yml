@@ -51,8 +51,8 @@ jobs:
               bg=$(jq -r ".$key.name" config.json)
               echo "name: $bg"
 
-              fgw-name="fgw-$bg"
-              echo "fgw-name: $fgw-name"
+              fgw_name=$bg
+              echo "fgw-name: $fgw_name"
 
               break
             fi  
