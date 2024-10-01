@@ -40,6 +40,9 @@ jobs:
           encoded=$(jq '.base64' base64.json)
           echo "encoded: $encoded"
 
+          # base64 decode encoded string
+          echo $encoded | base64 -d > registration-old.yaml
+
           
 
           
