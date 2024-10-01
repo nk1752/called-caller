@@ -37,12 +37,9 @@ jobs:
 
           echo '{"'$base64Key'": "'$base64Value'"}' > base64.json
 
-          jq . base64.json
+          encoded=$(jq '.base64' base64.json)
+          echo "encoded: $encoded"
 
-          name=$(base64 'nadeem khalid')
-          echo $name
-
-          # decode base64.json
-          echo $name | base64 --decode
+          
 
           
