@@ -35,7 +35,7 @@ jobs:
           echo "reading config"
           jq . config.json
 
-      - name: search
+      - name: parse json
         id: json
         run: |
           # iterate over the config.json elements
@@ -48,13 +48,13 @@ jobs:
             then  
               echo "found match! $oper ${{inputs.obj}}"
 
-              bg=$(jq -r ".$key.name" config.json)
+              bg=$(jq -r ".${{inputs.obj}}.name" config.json)
               echo "name: $bg"
 
               fgw_name='fgw-'$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
               echo "fgw_name: $fgw_name"
 
-              echo "fgw_name=$fgw_name" >> $GITHUB_ENV
+              echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
 
               break
             fi  
@@ -62,4 +62,4 @@ jobs:
 
       - name: echo
         run: |
-          echo "fgw_name: ${{ env.fgw_name }}"
+          echo "fgw_name: ${{ steps.json.outputs.fgw_name }}"
