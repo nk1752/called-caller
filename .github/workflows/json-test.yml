@@ -38,4 +38,7 @@ jobs:
           echo '{"'$base64Key'": "'$base64Value'"}' > base64.json
 
           jq . base64.json
+
+          # decode base64.json
+          jq -r '.base64' base64.json | base64 -d > registration-old-decoded.yaml
           
