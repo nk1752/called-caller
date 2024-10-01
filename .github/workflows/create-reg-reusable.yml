@@ -51,7 +51,7 @@ jobs:
               bg=$(jq -r ".$key.name" config.json)
               echo "name: $bg"
 
-              echo "fgw_name=fgw-$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}" >> GITHUB_OUTPUT
+              echo "fgw_name=$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}" >> GITHUB_OUTPUT
 
               echo $fgw_name
 
