@@ -16,7 +16,7 @@ jobs:
       strategy:
         matrix:
           env: ["dev", "prod"]
-          inputs: ["small", "1"]
+          inputs: ["fgw_1", "fgw_2", "fgw_3"]
 
       uses: ./.github/workflows/called-bulk.yml
       with:
