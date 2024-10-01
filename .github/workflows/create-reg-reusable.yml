@@ -38,7 +38,7 @@ jobs:
       - name: parse json
         id: json
         run: |
-          echo "bg=$(jq -r '.${{inputs.obj}}.name' config.json)" >> $GITHUB_OUTPUT
+          echo "'bg=$(jq -r ".${{inputs.obj}}.name" config.json)'" >> $GITHUB_OUTPUT
           echo "bg_lower=$(jq -r '.${{inputs.obj}}.name' | ascii_downcase" config.json)" >> $GITHUB_OUTPUT
           echo "env=$(jq -r '.${{inputs.obj}}.env' config.json)" >> $GITHUB_OUTPUT
           echo "size=$(jq -r '.${{inputs.obj}}.size | ascii_downcase' config.json)" >> $GITHUB_OUTPUT
