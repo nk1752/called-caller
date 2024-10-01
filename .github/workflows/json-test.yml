@@ -32,9 +32,8 @@ jobs:
 
       - name: base64 encode registration-old.yaml & save it in var yaml64
         run: |
-          echo "base64 encode registration-old.yaml & save it in var yaml64"
           yaml64=$(base64 registration-old.yaml)
-          echo '{"data": {"registration-old.yaml": "'$yaml64'"}}' > payload.json
+          echo '{"reg": "$(yaml64)"}' > payload.json
 
-          cat payload.json
+          jq . payload.json
           
