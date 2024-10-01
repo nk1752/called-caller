@@ -23,3 +23,4 @@ jobs:
       with:
         env: ${{ matrix.env }}
         obj: ${{ matrix.obj }}
+        env_name: ${{ matrix.env_name }}
