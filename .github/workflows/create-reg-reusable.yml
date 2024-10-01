@@ -51,9 +51,10 @@ jobs:
               bg=$(jq -r ".$key.name" config.json)
               echo "name: $bg"
 
-              echo "fgw_name=$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}" >> GITHUB_OUTPUT
+              fgw_name=$bg-${{inputs.env}}-${{inputs.size}}-${{inputs.no}}
+              echo "fgw_name: $fgw_name"
 
-              echo $fgw_name
+              echo "fgw_name=$fgw_name" >> $GITHUB_ENV
 
               break
             fi  
@@ -61,4 +62,4 @@ jobs:
 
       - name: echo
         run: |
-          echo "fgw_name: ${{ steps.json.outputs.fgw_name }}"
+          echo "fgw_name: ${{ env.fgw_name }}"
