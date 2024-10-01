@@ -51,7 +51,8 @@ jobs:
               bg=$(jq -r ".$key.name" config.json)
               echo "name: $bg"
 
-              fgw-name=fgw-$bg-${{inputs.size}}-${{inputs.no}}
+              fgw-name="$(fgw-$bg-${{inputs.size}}-${{inputs.no}})"
+              echo "fgw-name: $fgw-name"
 
               break
             fi  
