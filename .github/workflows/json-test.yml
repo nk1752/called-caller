@@ -26,6 +26,10 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4.1.6
 
+      - name: check jq
+        run: |
+          jq --help
+
       - name: base64 encode registration-old.yaml & save it in var yaml64
         run: |
           echo "base64 encode registration-old.yaml & save it in var yaml64"
