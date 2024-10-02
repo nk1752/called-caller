@@ -29,17 +29,19 @@ jobs:
           name=$(jq '.${{inputs.SN}}.name' config.json)
           echo "name: $name"
 
-          if [[ "${{inputs.env}}" == "dev" ]]
+          if [[ ${{inputs.env}} == "dev" ]]
           then
             env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
-          else if [[ "${{inputs.env}}" == "QA" ]]
+            echo "env_id: $env_id"
+          else if [[ ${{inputs.env}} == "QA" ]]
           then
             env_id=$(jq '.${{inputs.SN}}.QA' config.json)
+            echo "env_id: $env_id"
           else
             echo "not dev"
           fi
 
-          echo "env_id: $env_id"
+          
           
 
           
