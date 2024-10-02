@@ -29,24 +29,33 @@ jobs:
           name=$(jq '.${{inputs.SN}}.name' config.json)
           echo "name: $name"
 
-          if [[ "${{inputs.env}}" == "dev" ]]; then
+          if [[ "${{inputs.env}}" == "dev" ]]
+          then
             echo "dev"
             env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
             echo "env_id: $env_id"
+            echo "env_id=$env_id" >> $GITHUB_OUTPUT
           echo "dev_env_id: $env_id"
-          elif [[ "${{inputs.env}}" == "prod" ]]; then
+          elif [[ "${{inputs.env}}" == "prod" ]]
+          then
             echo "prod"
             env_id=$(jq '.${{inputs.SN}}.PROD' config.json)
             echo "env_id: $env_id"
-          elif [[ "${{inputs.env}}" == "qa" ]]; then
+            echo "env_id=$env_id" >> $GITHUB_OUTPUT
+          elif [[ "${{inputs.env}}" == "qa" ]]
+          then
             echo "qa"
             env_id=$(jq '.${{inputs.SN}}.QA' config.json)
             echo "env_id: $env_id"
+            echo "env_id=$env_id" >> $GITHUB_OUTPUT
           else
             echo "Invalid env"
             exit 1
           fi
 
+      - name: display
+        run: |
+          echo "env_id: $env_id"
           
           
 
