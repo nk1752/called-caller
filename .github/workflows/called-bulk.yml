@@ -33,14 +33,14 @@ jobs:
           echo "reading config"
           jq . config.json
 
-          bg=$(jq -r ".${{inputs.obj}}.name" config.json)
+          bg=$(jq -r ".[${{inputs.obj}}].name" config.json)
           echo "name: $bg"
           echo "bg=$bg" >> $GITHUB_OUTPUT
           bg_lower=$(jq -r ".${{inputs.obj}}.name | ascii_downcase" config.json)
           echo "name lowercase: $bg_lower"
           env=$(jq -r ".${{inputs.obj}}.env" config.json)
-          org_id=$(jq -r ".${{inputs.obj}}.org_id" config.json)
+          org_id=$(jq -r ".${{inputs.obj}}.orgId" config.json)
           echo "org_id: $org_id"
-          
+
           
           
