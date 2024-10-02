@@ -26,14 +26,11 @@ jobs:
 
       - name: read config
         run: |
-          echo "reading config"
-          jq . config.json
 
           # iterate over the json objects of the config file
           for key in $(jq -r 'keys[]' config.json); do
             echo "key: $key"
-            echo "S.NO: $(jq -r ".$key.S_NO" config.json)"
-            echo "NAME: $(jq -r ".$key.NAME" config.json)"
+            
           done
 
           
