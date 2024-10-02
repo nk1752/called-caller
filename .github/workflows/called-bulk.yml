@@ -35,24 +35,21 @@ jobs:
 
             echo "dev"
             env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
-            echo "env_id: $env_id"
-            echo "env_id=$env_id" >> $GITHUB_OUTPUT
+            
           
           elif [[ "${{inputs.env}}" == "prod" ]]
           then
 
             echo "prod"
             env_id=$(jq '.${{inputs.SN}}.PROD' config.json)
-            echo "env_id: $env_id"
-            echo "env_id=$env_id" >> $GITHUB_OUTPUT
+            
 
           elif [[ "${{inputs.env}}" == "qa" ]]
           then
 
             echo "qa"
             env_id=$(jq '.${{inputs.SN}}.QA' config.json)
-            echo "env_id: $env_id"
-            echo "env_id=$env_id" >> $GITHUB_OUTPUT
+            
 
           else
             echo "Invalid env"
