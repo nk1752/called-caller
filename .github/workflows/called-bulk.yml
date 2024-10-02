@@ -31,26 +31,21 @@ jobs:
 
           if [[ "${{inputs.env}}" == "dev" ]]; then
             echo "dev"
-            dev_env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
-            echo "dev_env_id: $dev_env_id"
+            env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
+            echo "env_id: $env_id"
           echo "dev_env_id: $dev_env_id"
           elif [[ "${{inputs.env}}" == "prod" ]]; then
             echo "prod"
-          elif [[ "${{inputs.env}}" == "qa" ]]; then
+            env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
+            echo "env_id: $env_id"
+          elif [[ "${{inputs.env}}" == "PROD" ]]; then
             echo "qa"
+            env_id=$(jq '.${{inputs.SN}}.QA' config.json)
+            echo "env_id: $env_id"
           else
             echo "Invalid env"
             exit 1
           fi
-
-          dev_env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
-          echo "dev_env_id: $dev_env_id"
-
-          prod_env_id=$(jq '.${{inputs.SN}}.PROD' config.json)
-          echo "prod_env_id: $prod_env_id"
-
-          qa_env_id=$(jq '.${{inputs.SN}}.QA' config.json)
-          echo "qa_env_id: $qa_env_id"
 
           
           
