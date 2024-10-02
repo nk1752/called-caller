@@ -7,10 +7,7 @@ on:
         type: string
         required: true
       obj:
-        type: string
-        required: true
-      env_name:
-        type: string
+        type: number
         required: true
         
 
@@ -23,7 +20,6 @@ jobs:
         run: |
           echo "obj: ${{ inputs.obj }}"
           echo "env: ${{ inputs.env }}"
-          echo "env_name: ${{ inputs.env_name }}"
 
       - name: checkout
         uses: actions/checkout@v4.1.6
@@ -33,14 +29,11 @@ jobs:
           echo "reading config"
           jq . config.json
 
-          bg=$(jq -r .'${{inputs.obj}}.name' config.json)
-          echo "name: $bg"
-          echo "bg=$bg" >> $GITHUB_OUTPUT
-          bg_lower=$(jq -r ".${{inputs.obj}}.name | ascii_downcase" config.json)
-          echo "name lowercase: $bg_lower"
-          env=$(jq -r ".${{inputs.obj}}.env" config.json)
-          org_id=$(jq -r ".${{inputs.obj}}.orgId" config.json)
-          echo "org_id: $org_id"
+          # iterate over the json objects of the config file
+          for key in $(jq -r 'keys[]' config.json); do
+            echo "key: $key"
+            echo "value: $(jq -r ".$key" config.json)"
+          done
 
           
           

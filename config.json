@@ -1,13 +1,15 @@
-{
-  "fgw_1":{
+[
+  {
+    "S.NO": 1,
     "name": "RegionsBank",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "QA": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
-    "AD_GROUP": "RegionsBank"
+    "AD_GROUP": "-"
   },
-  "fgw_2":{
+  {
+    "S.NO": 2,
     "name": "BLZE",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
@@ -15,4 +17,4 @@
     "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "AD_GROUP": "BLZE"
   }
-}
+]
