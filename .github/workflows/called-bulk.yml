@@ -31,6 +31,9 @@ jobs:
 
           if [[ "${{inputs.env}}" == "dev" ]]; then
             echo "dev"
+            dev_env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
+            echo "dev_env_id: $dev_env_id"
+          echo "dev_env_id: $dev_env_id"
           elif [[ "${{inputs.env}}" == "prod" ]]; then
             echo "prod"
           elif [[ "${{inputs.env}}" == "qa" ]]; then
@@ -39,7 +42,7 @@ jobs:
             echo "Invalid env"
             exit 1
           fi
-          
+
           dev_env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
           echo "dev_env_id: $dev_env_id"
 
