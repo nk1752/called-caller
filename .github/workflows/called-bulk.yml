@@ -33,7 +33,7 @@ jobs:
             echo "dev"
             env_id=$(jq '.${{inputs.SN}}.DEV' config.json)
             echo "env_id: $env_id"
-          echo "dev_env_id: $dev_env_id"
+          echo "dev_env_id: $env_id"
           elif [[ "${{inputs.env}}" == "prod" ]]; then
             echo "prod"
             env_id=$(jq '.${{inputs.SN}}.DEV' config.json)

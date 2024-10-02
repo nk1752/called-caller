@@ -15,7 +15,7 @@ jobs:
     matrix-job:
       strategy:
         matrix:
-          env: ["dev"]
+          env: ["prod", "dev"]
           SN: ["SN_1", "SN_2"]
 
       uses: ./.github/workflows/called-bulk.yml
