@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: print inputs
         run: |
-          echo "obj: ${{ inputs.SN }}"
+          echo "SN: ${{ inputs.SN }}"
           echo "env: ${{ inputs.env }}"
 
       - name: checkout

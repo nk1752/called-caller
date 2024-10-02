@@ -16,10 +16,10 @@ jobs:
       strategy:
         matrix:
           env: ["dev"]
-          obj: ["SN_1", "SN_2"]
+          SN: ["SN_1", "SN_2"]
 
       uses: ./.github/workflows/called-bulk.yml
       with:
         env: ${{ matrix.env }}
-        obj: ${{ matrix.obj }}
+        SN: ${{ matrix.SN }}
         
