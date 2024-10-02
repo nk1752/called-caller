@@ -53,6 +53,9 @@ jobs:
             exit 1
           fi
 
+          echo "env_id: $env_id"
+          echo "env_id=$env_id" >> $GITHUB_OUTPUT
+
       - name: display
         run: |
           echo "env_id: $env_id"
