@@ -32,7 +32,8 @@ jobs:
           # iterate over the json objects of the config file
           for key in $(jq -r 'keys[]' config.json); do
             echo "key: $key"
-            echo "value: $(jq -r ".$key" config.json)"
+            echo "S.NO: $(jq -r ".$key.S_NO" config.json)"
+            echo "NAME: $(jq -r ".$key.NAME" config.json)"
           done
 
           

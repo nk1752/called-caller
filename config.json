@@ -1,6 +1,6 @@
 [
   {
-    "S.NO": 1,
+    "S_NO": 1,
     "name": "RegionsBank",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
@@ -9,7 +9,7 @@
     "AD_GROUP": "-"
   },
   {
-    "S.NO": 2,
+    "S_NO": 2,
     "name": "BLZE",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
