@@ -6,8 +6,8 @@ on:
       env:
         type: string
         required: true
-      obj:
-        type: number
+      SN:
+        type: string
         required: true
         
 
@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: print inputs
         run: |
-          echo "obj: ${{ inputs.obj }}"
+          echo "obj: ${{ inputs.SN }}"
           echo "env: ${{ inputs.env }}"
 
       - name: checkout
@@ -27,11 +27,9 @@ jobs:
       - name: read config
         run: |
 
-          # iterate over the json objects of the config file
-          for key in $(jq -r 'keys[]' config.json); do
-            echo "key: $key"
-            
-          done
+          name=$(jq '.${{inputs.SN}}.name' config.json)
+          echo "name: $name"
+          
 
           
           

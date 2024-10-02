@@ -1,6 +1,5 @@
-[
-  {
-    "S_NO": 1,
+{
+  "SN_1": {
     "name": "RegionsBank",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
@@ -8,8 +7,7 @@
     "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "AD_GROUP": "-"
   },
-  {
-    "S_NO": 2,
+  "SN_2": {
     "name": "BLZE",
     "OrgID": "342345c69-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "DEV": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
@@ -17,4 +15,4 @@
     "PROD": "1223576c-2e3b-4b1d-8f36-6e3b1f6e3f2b",
     "AD_GROUP": "BLZE"
   }
-]
+}

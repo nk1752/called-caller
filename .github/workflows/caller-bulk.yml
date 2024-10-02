@@ -16,7 +16,7 @@ jobs:
       strategy:
         matrix:
           env: ["dev"]
-          obj: [1, 2]
+          obj: ["SN_1", "SN_2"]
 
       uses: ./.github/workflows/called-bulk.yml
       with:
