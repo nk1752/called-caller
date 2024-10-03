@@ -19,7 +19,7 @@ jobs:
       - name: convert to lowercase
         run: |
           UPPER="HELLO"
-          lower=$(echo $UPPER | tr '[:upper:]' '[:lower:]')
+          lower=$(echo $UPPER | tr '[:upper]' '[:lower]')
 
       - name: convert dash to underscore
         run: |
