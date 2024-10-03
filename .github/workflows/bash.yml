@@ -19,9 +19,9 @@ jobs:
       - name: convert to lowercase
         run: |
           UPPER="HELLO"
-          lower=$(echo $UPPER | tr '[:upper:]' '[:lower:]')"
+          lower=$(echo $UPPER | tr '[:upper:]' '[:lower:]')
 
       - name: convert dash to underscore
         run: |
           DASH="hello-world"
-          underscore=$(echo $DASH | tr '-' '_')"
+          underscore=$(echo $DASH | tr '-' '_')
