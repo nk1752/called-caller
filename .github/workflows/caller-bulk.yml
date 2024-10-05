@@ -2,9 +2,9 @@ name: caller bulk
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
   
 permissions:
   contents: read
@@ -22,4 +22,5 @@ jobs:
       with:
         env: ${{ matrix.env }}
         bg: ${{ matrix.bg }}
+        env_name: "accounts-test"
         
