@@ -17,10 +17,11 @@ jobs:
         matrix:
           bg: ["RegionsBank"]
           env: ["dev", "prod"]
+          env_name: ["accounts-test"]
 
       uses: ./.github/workflows/called-bulk.yml
       with:
         env: ${{ matrix.env }}
         bg: ${{ matrix.bg }}
-        env_name: "accounts-test"
+        env_name: ${{ matrix.env_name }}
         
