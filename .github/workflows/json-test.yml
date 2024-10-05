@@ -25,7 +25,7 @@ jobs:
 
       - name: read confog.json
         run: |
-          jq -r 'keys[]' config.json > keys.json
+          echo $(jq -r 'keys[]' config.json) > keys.json
           jq . keys.json
            
       
