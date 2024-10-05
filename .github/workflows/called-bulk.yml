@@ -46,8 +46,12 @@ jobs:
           
             bg=$key
             echo "bg=$bg" >> $GITHUB_OUTPUT
+            
             bg_lower=$(echo $bg | tr 'A-Z' 'a-z')
             echo "bg_lower=$bg_lower" >> $GITHUB_OUTPUT
+
+            env_name=$(echo ${{inputs.env_name}} | tr 'A-Z' 'a-z')
+            echo "env_name=$env_name" >> $GITHUB_OUTPUT
 
             env=$(echo ${{inputs.env}} | tr 'A-Z' 'a-z')
             echo "env=$env" >> $GITHUB_OUTPUT
@@ -68,6 +72,10 @@ jobs:
           echo "env_id: $env_id"
           echo "env_id=$env_id" >> $GITHUB_OUTPUT
 
+          fgw_name='fgw-$bg_lower-$env_name'-${{inputs.size}}-${{inputs.no}}
+          echo "fgw_name: $fgw_name"
+          echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
+
       - name: display
         run: |
  
@@ -75,6 +83,7 @@ jobs:
           echo "bg_lower: ${{steps.json.outputs.bg_lower}}"
           echo "env_name: ${{steps.json.outputs.env_name}}"
           echo "env_id: ${{steps.json.outputs.env_id}}"
+          echo "fgw_name: ${{steps.json.outputs.fgw_name}}"
 
           
           
