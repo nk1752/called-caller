@@ -19,9 +19,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: echo
-        run: |
-          echo "caller send: ${{ env.obj }}"
 
       - name: checkout
         uses: actions/checkout@v4.1.6
