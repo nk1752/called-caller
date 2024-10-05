@@ -72,7 +72,7 @@ jobs:
           echo "env_id: $env_id"
           echo "env_id=$env_id" >> $GITHUB_OUTPUT
 
-          fgw_name='fgw-$bg_lower-$env_name'-${{inputs.size}}-${{inputs.no}}
+          fgw_name='fgw-'$bg_lower-$env_name-${{inputs.size}}-${{inputs.no}}
           echo "fgw_name: $fgw_name"
           echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
 
