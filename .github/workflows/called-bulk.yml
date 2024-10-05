@@ -53,11 +53,11 @@ jobs:
             echo "env=$env" >> $GITHUB_OUTPUT
 
             if [[ "$env" == "dev" ]]; then
-              env_id=$(jq '.$key.DEV' config.json)
+              env_id=$(jq -r '.[$key].DEV' config.json)
             elif [[ "$env" == "prod" ]]; then
-              env_id=$(jq '.$key.PROD' config.json)
+              env_id=$(jq -r '.[$key].PROD' config.json)
             elif [[ "$env" == "qa" ]]; then
-              env_id=$(jq '.$key.QA' config.json)
+              env_id=$(jq -r '.[$key].QA' config.json)
             else
               echo "Invalid env"
               exit 1
