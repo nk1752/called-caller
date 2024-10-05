@@ -25,6 +25,15 @@ jobs:
             echo "bg=$bg" >> $GITHUB_OUTPUT       
           done
 
+          # upload bg to github artifact
+
+      - name: better
+        run: |
+          cat data.json | jq '. | keys' > keys.json
+          cat keys.json | jq '.[]' > keys.txt
+
+          jq . keys.json
+
   matrix-job:
     strategy:
       matrix:
