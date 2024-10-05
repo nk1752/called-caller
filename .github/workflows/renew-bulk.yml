@@ -24,6 +24,7 @@ jobs:
         id: json
         run: |
           jq 'keys' config.json >> bg.json
+          jq . bg.json
           echo "matrix=$(jq -r . bg.json) >> $GITHUB_OUTPUT
 
   # This job will be called by the caller-bulk.yml workflow using matrix strategy
