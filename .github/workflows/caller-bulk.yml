@@ -21,14 +21,7 @@ jobs:
       - name: parse json
         id: json
         run: |
-          jq 'keys' config.json >> keys.json
-
-          # upload bg to github artifact
-
-      - name: better
-        run: |
-          jq -r 'keys[]' config.json > bg.json
-          jq . bg.json
+          jq 'keys' config.json >> bg.json
 
       - name: upload to github artifact
         uses: actions/upload-artifact@v4
