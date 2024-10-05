@@ -4,24 +4,37 @@ on:
   workflow_dispatch:
   push:
 
-  
 permissions:
   contents: read
   pull-requests: write
   id-token: write
 
 jobs:
-    matrix-job:
-      strategy:
-        matrix:
-          bg: ["RegionsBank", "BP"]  
-          env: ["qa"]
-          env_name: ["np-a", "np-b", "np-z-a", "np-z-b"]  
-          size: ["small", "large"]
-      uses: ./.github/workflows/called-bulk.yml
-      with:
-        bg: ${{ matrix.bg }}
-        env: ${{ matrix.env }}
-        env_name: ${{ matrix.env_name }}
-        size: ${{ matrix.size }}
-        
+  business-group:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+      - name: read config
+        run: |
+          echo "reading config"
+          jq . config.json
+      - name: parse json
+        id: json
+        run: |
+          jq -r 'keys[]' config.json > bg.json
+          bg=$(jq -r '.[]' bg.json)
+          echo "bg: $bg"
+  matrix-job:
+    strategy:
+      matrix:
+        bg: ["RegionsBank", "BP"]
+        env: ["qa"]
+        env_name: ["np-a", "np-b", "np-z-a", "np-z-b"]
+        size: ["small", "large"]
+    uses: ./.github/workflows/called-bulk.yml
+    with:
+      bg: ${{ matrix.bg }}
+      env: ${{ matrix.env }}
+      env_name: ${{ matrix.env_name }}
+      size: ${{ matrix.size }}
