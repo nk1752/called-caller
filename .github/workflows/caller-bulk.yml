@@ -15,8 +15,8 @@ jobs:
       strategy:
         matrix:
           bg: ["RegionsBank"]  
-          env: ["dev", "prod"]
-          env_name: ["accounts-test"]  
+          env: ["qa"]
+          env_name: ["np-a", "np-b", "np-z-a", "np-z-b"]  
           size: ["small", "large"]
       uses: ./.github/workflows/called-bulk.yml
       with:
