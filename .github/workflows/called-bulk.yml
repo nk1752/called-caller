@@ -85,6 +85,8 @@ jobs:
           echo "env_id: ${{steps.json.outputs.env_id}}"
           echo "fgw_name: ${{steps.json.outputs.fgw_name}}"
 
+          echo "## flex name: ${{steps.json.outputs.fgw_name}}" >> $GITHUB_STEP_SUMMARY
+
           
           
 
