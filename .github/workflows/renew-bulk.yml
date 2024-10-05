@@ -1,0 +1,61 @@
+name: renew-bulk
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - main
+
+permissions:
+  contents: read
+  pull-requests: write
+  id-token: write
+
+jobs:
+  renew-matrix:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4.1.6
+
+      - name: parse json for business group
+        id: bg
+        run: |
+          jq 'keys' config.json >> bg.json
+          jq . bg.json
+
+      - name: parse json for environment
+        run: |
+          for key in $(jq -r 'keys[]' config.json); do
+                echo "Key: $key"
+              
+                bg=$key
+                echo "bg=$bg" >> $GITHUB_OUTPUT
+                
+                bg_lower=$(echo $bg | tr 'A-Z' 'a-z')
+                echo "bg_lower=$bg_lower" >> $GITHUB_OUTPUT
+
+                env_name=$(echo ${{inputs.env_name}} | tr 'A-Z' 'a-z')
+                echo "env_name=$env_name" >> $GITHUB_OUTPUT
+
+                env=$(echo ${{inputs.env}} | tr 'A-Z' 'a-z')
+                echo "env=$env" >> $GITHUB_OUTPUT
+
+                # ** get env_id for each env **
+                env_id_dev=$(jq -r '.${{inputs.bg}}.DEV' config.json)
+                echo "env_id_dev=$env_id_dev" >> $GITHUB_OUTPUT
+                env_id_qa=$(jq -r '.${{inputs.bg}}.QA' config.json)
+                echo "env_id_qa=$env_id_qa" >> $GITHUB_OUTPUT
+                env_id_prod=$(jq -r '.${{inputs.bg}}.PROD' config.json)
+                echo "env_id_prod=$env_id_prod" >> $GITHUB_OUTPUT   
+
+              done
+
+              echo "env_id: $env_id"
+              echo "env_id=$env_id" >> $GITHUB_OUTPUT
+
+              fgw_name='fgw-'$bg_lower-$env_name-${{inputs.size}}-${{inputs.no}}
+              echo "fgw_name: $fgw_name"
+              echo "fgw_name=$fgw_name" >> $GITHUB_OUTPUT
+
+          
