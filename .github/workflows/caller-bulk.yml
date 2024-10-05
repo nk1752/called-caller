@@ -15,13 +15,12 @@ jobs:
     matrix-job:
       strategy:
         matrix:
-          bg: ["RegionsBank"]
+          bg: ["RegionsBank"]  
           env: ["dev", "prod"]
-          env_name: ["accounts-test"]
-
+          env_name: ["accounts-test"]  
       uses: ./.github/workflows/called-bulk.yml
       with:
-        env: ${{ matrix.env }}
         bg: ${{ matrix.bg }}
+        env: ${{ matrix.env }}
         env_name: ${{ matrix.env_name }}
         

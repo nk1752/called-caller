@@ -3,13 +3,13 @@ name: called-bulk
 on:
   workflow_call:
     inputs:
+      bg:
+        type: string
+        required: true
       env:
         type: string
         required: true
       env_name:
-        type: string
-        required: true
-      bg:
         type: string
         required: true
       size:
