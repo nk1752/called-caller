@@ -29,9 +29,7 @@ jobs:
 
       - name: better
         run: |
-          cat data.json | jq '. | keys' > keys.json
-          cat keys.json | jq '.[]' > keys.txt
-
+          jq -r 'keys[]' config.json > keys.json
           jq . keys.json
 
   matrix-job:
