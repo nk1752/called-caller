@@ -41,6 +41,6 @@ jobs:
     uses: ./.github/workflows/renew-bulk-reusable.yml
     with:
       bg: ${{ matrix.bg }}
-      env: "DEV"
-      env_name: "dev"
+      env: ${{ matrix.env }}
+      env_name: ${{ matrix.env_name }}
     
