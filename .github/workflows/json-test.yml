@@ -2,6 +2,9 @@ name: json testing
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -23,22 +26,9 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4.1.6
 
-      - name: check jq
-        run: |
-          jq --help
-
       - name: read confog.json
         run: |
-          jq . config.json
+          jq . config.json > bg.json
+          jq . bg.json
 
-      - name: base64 iterate
-        run: |
-          for i in $(jq -r '.[] | @base64' config.json); do
-            echo $i | base64 --decode
-          done
-
-      - name: iterate over json & print name
-        run: |
-          for i in $(jq -r '.[] | @base64' config.json); do
-            echo $i | base64 --decode | jq -r '.name'
-          done
+      
