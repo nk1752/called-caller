@@ -14,7 +14,7 @@ jobs:
     matrix-job:
       strategy:
         matrix:
-          bg: ["RegionsBank"]  
+          bg: ["RegionsBank", "BP"]  
           env: ["qa"]
           env_name: ["np-a", "np-b", "np-z-a", "np-z-b"]  
           size: ["small", "large"]
