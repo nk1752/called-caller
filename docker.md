@@ -20,3 +20,23 @@ registration renew \
 <path-to-registration-file-in-container>
 
 docker exec -u $UID <container-name-or-id> flexctl registration inspect
+
+# inspect registration.yaml
+      - name: inspection
+        run: |
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)/temp":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration inspect --file=/registration/registration.yaml > reg-date.yaml
+
+      - name: renew
+        run: |
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)":/renew \
+            -v "$(pwd)/temp":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration renew \
+            --client-id=b95726291f564ae2942ac2c4ecc46311 \
+            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --output-directory=/renew \
+            /registration/registration.yaml
