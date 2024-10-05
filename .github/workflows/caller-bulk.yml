@@ -22,9 +22,11 @@ jobs:
       - name: parse json
         id: json
         run: |
-          jq -r 'keys[]' config.json > bg.json
-          bg=$(jq -r '.[]' bg.json)
-          echo "bg: $bg"
+          for key in $(jq -r 'keys[]' config.json); do
+            echo "Key: $key"
+            bg=$key
+            echo "bg=$bg" >> $GITHUB_OUTPUT       
+          done
   matrix-job:
     strategy:
       matrix:
