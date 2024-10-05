@@ -15,7 +15,7 @@ jobs:
   business-group:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.json.outputs.bg_matrix }}
+      matrix: ${{ steps.json.outputs.matrix }}
     steps:
       - name: checkout
         uses: actions/checkout@v4.1.6
@@ -24,7 +24,7 @@ jobs:
         id: json
         run: |
           jq 'keys' config.json >> bg.json
-          echo "bg_matrix=$(jq . bg.json) >> $GITHUB_OUTPUT
+          echo "matrix=$(jq -r . bg.json) >> $GITHUB_OUTPUT
 
   # This job will be called by the caller-bulk.yml workflow using matrix strategy
   # The matrix will be output from the business-group job
