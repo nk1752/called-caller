@@ -50,11 +50,13 @@ jobs:
             echo "bg_lower=$bg_lower" >> $GITHUB_OUTPUT
 
             env=$(echo ${{inputs.env}} | tr 'A-Z' 'a-z')
-            if [[ "env" == "dev" ]]; then
+            echo "env=$env" >> $GITHUB_OUTPUT
+
+            if [[ "$env" == "dev" ]]; then
               env_id=$(jq '.$key.DEV' config.json)
-            elif [[ "${{inputs.env}}" == "prod" ]]; then
+            elif [[ "$env" == "prod" ]]; then
               env_id=$(jq '.$key.PROD' config.json)
-            elif [[ "$key" == "qa" ]]; then
+            elif [[ "$env" == "qa" ]]; then
               env_id=$(jq '.$key.QA' config.json)
             else
               echo "Invalid env"
