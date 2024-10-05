@@ -30,6 +30,7 @@ jobs:
   # The matrix will be output from the business-group job
   # The matrix will be used to call the called-bulk.yml workflow
   renew-matrix:
+    runs-on: ubuntu-latest
     needs: business-group
     strategy:
       matrix:
@@ -37,9 +38,9 @@ jobs:
         env: ["DEV"]
         env_name: ["dev"]
 
-    uses: ./.github/workflows/renew-bulk-reusable.yml
-    with:
-      bg: ${{ matrix.bg }}
-      env: "DEV"
-      env_name: "dev"
+    steps:
+      - name: print inputs
+        run: |
+          echo "bg: ${{ matrix.bg }}"
+          echo "env: ${{ matrix.env }}"
     
