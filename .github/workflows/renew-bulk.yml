@@ -36,7 +36,7 @@ jobs:
       matrix:
         bg: ${{fromJson(needs.business-group.outputs.matrix)}}
         env: ["DEV"]
-        env_name: ["dev"]
+        env_name: ["np-a","np-b"]
           
     uses: ./.github/workflows/renew-bulk-reusable.yml
     with:
