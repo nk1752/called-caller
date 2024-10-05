@@ -24,7 +24,7 @@ jobs:
             bg=$key
             echo "bg=$bg" >> $GITHUB_OUTPUT       
           done
-          
+
   matrix-job:
     strategy:
       matrix:
