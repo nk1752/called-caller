@@ -30,6 +30,6 @@ jobs:
 
       - name: convert underscore to underscore
         run: |
-          DASH="Hello_World"
+          DASH="HelloWorld"
           underscore=$(echo $DASH | tr '_' '-' | tr 'A-Z' 'a-z')
           echo "underscore: $underscore"
