@@ -80,8 +80,21 @@ jobs:
 
       - name: inspect flex registration
         run: |
-          echo "inspect flex registration"
+          docker run --entrypoint flexctl \
+            -v "$(pwd)/temp":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration inspect --file=/registration/registration.yaml > reg-date.json
 
-      - name: renew flex registration
+          jq . reg-date.json
+
+      - name: renew registration
         run: |
-          echo "renew flex registration"
+          sudo docker run --entrypoint flexctl \
+            -v "$(pwd)":/renew \
+            -v "$(pwd)/temp":/registration \
+            -u $UID mulesoft/flex-gateway \
+            registration renew \
+            --client-id=b95726291f564ae2942ac2c4ecc46311 \
+            --client-secret=59dB6D7A84bd442bAfE7422233a82902 \
+            --output-directory=/renew \
+            /registration/registration.yaml
