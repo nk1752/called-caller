@@ -50,10 +50,10 @@ jobs:
             echo "test is not null"
           fi
 
-      - name: direct test for null
+      - name: chatGPT
         run: |
           # Example variable
-          variable=""
+          variable="Hello"
 
           # Check if the variable is null or empty
           if [ -z "$variable" ]; then
