@@ -33,3 +33,12 @@ jobs:
           DASH="HelloWorld"
           underscore=$(echo $DASH | tr '_' '-' | tr 'A-Z' 'a-z')
           echo "underscore: $underscore"
+
+      - name: check for null
+        run: |
+          NULL=""
+          if [ -z "$NULL" ]; then
+            echo "NULL is empty"
+          else
+            echo "NULL is not empty"
+          fi
