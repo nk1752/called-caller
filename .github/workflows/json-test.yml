@@ -31,7 +31,7 @@ jobs:
       # The -z test checks if a variable is null or an empty string:
       - name: test -z
         run: |
-          test=$(jq '.ned' config.json)
+          test=$(jq '.RegionsBank' config.json)
           echo $test
 
           if [[ -z "$test" ]]; then
