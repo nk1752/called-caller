@@ -43,7 +43,7 @@ jobs:
       # The -n test checks if a variable is NOT null:
       - name: test -n
         run: |
-          test=$(jq -r '.ned' config.json)
+          test=$(jq -r '.RegionsBank' config.json)
           echo $test
 
           if [ -n "$test" ]; then
