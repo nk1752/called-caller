@@ -36,9 +36,9 @@ jobs:
 
       - name: check for null
         run: |
-          NULL=null
-          if [ -z "$NULL" ]; then
-            echo "NULL is empty"
+          str=null
+          if [ -z "$str" ]; then
+            echo "$str is empty"
           else
-            echo "NULL is not empty"
+            echo "$str is not empty"
           fi
