@@ -28,5 +28,7 @@ jobs:
           test=$(jq '.RegionsBank' config.json)
           echo $test
 
+          error=$(jq '.error' vault.json)
+
            
       
