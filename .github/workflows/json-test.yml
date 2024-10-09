@@ -29,6 +29,7 @@ jobs:
           echo $test
 
           error=$(jq '.error' vault.json)
+          echo $error
 
            
       
