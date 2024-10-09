@@ -23,17 +23,14 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4.1.6
 
-      - name: test -z
+      - name: read keys
         run: |
           jq 'keys' config.json >> keys.json
           jq . keys.json
 
-          test=$(jq '.RegionsBank' config.json)
-          echo $test
-
       - name: test -z
         run: |
-          error=$(jq '.error' vault.json)
+          error=$(jq '.error' config.json)
           echo $error
 
           if [ -z "$error" ]; then
