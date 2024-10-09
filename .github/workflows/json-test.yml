@@ -34,11 +34,8 @@ jobs:
           list_Data=$(jq '.ned' config.json)
           echo $list_Data
 
-          if [[ -n "$list_Data" ]]
-          then
-              echo "not Empty"
-          else
-              echo "empty"
+          if [[ "$list_Data" == null ]]; then
+              echo "null"
           fi
 
       
