@@ -41,7 +41,7 @@ jobs:
       
       - name: test -n
         run: |
-          test=$(jq -r '.RegionsBank' config.json)
+          test=$(jq -r '.ned' config.json)
           echo $test
 
           if [ "$test" == "" ]; then
