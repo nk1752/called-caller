@@ -42,4 +42,12 @@ jobs:
               register=false
           fi
 
+          echo $register
+
+          if [[ "$register" == true ]]; then
+              echo "true"
+          else
+              echo "false"
+          fi
+
       
