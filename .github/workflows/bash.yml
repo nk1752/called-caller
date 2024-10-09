@@ -36,7 +36,7 @@ jobs:
 
       - name: check for null
         run: |
-          str=null
+          unset str
           if [ -z "$str" ]; then
             echo "$str is empty"
           else
