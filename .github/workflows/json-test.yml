@@ -23,7 +23,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@v4.1.6
 
-      - name: read confog.json
+      - name: test -z
         run: |
           jq 'keys' config.json >> keys.json
           jq . keys.json
@@ -31,6 +31,8 @@ jobs:
           test=$(jq '.RegionsBank' config.json)
           echo $test
 
+      - name: test -z
+        run: |
           error=$(jq '.error' vault.json)
           echo $error
 
@@ -40,9 +42,9 @@ jobs:
             echo "error is not empty"
           fi
       
-      - name: read non key
+      - name: test -n
         run: |
-          test=$(jq -r '.ned' config.json)
+          test=$(jq -r '.RegionsBank' config.json)
           echo $test
 
           if [ -n "$test" ]; then
