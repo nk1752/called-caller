@@ -31,13 +31,14 @@ jobs:
       # The -z test checks if a variable is null or an empty string:
       - name: test -z
         run: |
-          test=$(jq '.ned' config.json)
-          echo $test
+          list_Data=$(jq '.ned' config.json)
+          echo $list_Data
 
-          if [[ "$test" == "" ]]; then
-            echo "test is null or empty"
+          if [[ -n "$list_Data" ]]
+          then
+              echo "not Empty"
           else
-            echo "test is NOT empty"
+              echo "empty"
           fi
 
       
