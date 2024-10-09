@@ -31,47 +31,13 @@ jobs:
       # The -z test checks if a variable is null or an empty string:
       - name: test -z
         run: |
-          error=$(jq '.error' config.json)
-          echo $error
-
-          if [ -z "$error" ]; then
-            echo "error is empty"
-          else
-            echo "error is not empty"
-          fi
-
-      # The -n test checks if a variable is NOT null:
-      - name: test -n
-        run: |
-          test=$(jq -r '.RegionsBank' config.json)
+          test=$(jq '.ned' config.json)
           echo $test
 
-          if [ -n $test ]; then
-            echo "test is NOT null or empty"
-          else
+          if [[ -z "$test" ]]; then
             echo "test is null or empty"
-          fi
-
-      - name: chatGPT
-        run: |
-          # Example variable
-          variable="Hello"
-
-          # Check if the variable is null or empty
-          if [ -z "$variable" ]; then
-              echo "Variable is null or empty"
           else
-              echo "Variable is NOT null"
+            echo "test is NOT empty"
           fi
 
-          # Change variable value
-          variable="Hello"
-
-          # Check again
-          if [ -n "$variable" ]; then
-              echo "Variable is NOT null"
-          else
-              echo "Variable is null or empty"
-          fi
-           
       
