@@ -46,7 +46,7 @@ jobs:
           test=$(jq -r '.RegionsBank' config.json)
           echo $test
 
-          if [ -n "$test" ]; then
+          if [ -n $test ]; then
             echo "test is NOT null or empty"
           else
             echo "test is null or empty"
