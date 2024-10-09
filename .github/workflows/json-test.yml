@@ -44,7 +44,7 @@ jobs:
           test=$(jq -r '.ned' config.json)
           echo $test
 
-          if [ "$test" == "" ]; then
+          if [ $test == "" ]; then
             echo "test is null or empty"
           else
             echo "test is not null"
@@ -52,14 +52,24 @@ jobs:
 
       - name: direct test for null
         run: |
-          test=$(jq -r '.ned' config.json)
-          echo $test
+          # Example variable
+          variable=""
 
-          if [ "$test" ]; then
-            echo "test is NOT null or empty"
+          # Check if the variable is null or empty
+          if [ -z "$variable" ]; then
+              echo "Variable is null or empty"
           else
-            echo "test is null"
+              echo "Variable is not null"
           fi
 
+          # Change variable value
+          variable="Hello"
+
+          # Check again
+          if [ -n "$variable" ]; then
+              echo "Variable is not null"
+          else
+              echo "Variable is null or empty"
+          fi
            
       
