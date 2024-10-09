@@ -23,7 +23,10 @@ jobs:
       - name: read confog.json
         run: |
           jq 'keys' config.json >> keys.json
-
           jq . keys.json
+
+          test=$(jq '.RegionsBank' config.json)
+          echo $test
+
            
       
