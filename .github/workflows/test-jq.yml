@@ -21,6 +21,10 @@ on:
         type: number
         description: Number of objects to create
         default: 1
+  push:
+    branches:
+      - main
+      - test
  
 permissions:
   contents: read
