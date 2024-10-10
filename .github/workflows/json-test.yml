@@ -5,7 +5,7 @@ on:
     inputs:
       env:
         type: choice
-        description: Who to greet
+        description: select enironment
         options: 
           - dev
           - qa
