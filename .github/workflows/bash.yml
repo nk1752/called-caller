@@ -30,16 +30,7 @@ jobs:
           msg=$(bash ./scripts/hello.sh "Nadeem")
           echo "msg: $msg"
 
-      - name: days
-        run: |
-          days=$(bash ./scripts/daysToExpiry "2026-12-31")
-          echo "days: $days"
-
-      - name: use function
-        run: |
-          days=$(bash ./scripts/get_expiry_days.sh "2026-12-31")
-          echo "days: $days"
-          
+          ls -l /scripts
 
       - name: convert dash to underscore
         run: |
