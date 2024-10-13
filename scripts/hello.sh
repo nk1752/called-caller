@@ -1,4 +1,4 @@
 #!/bin/bash
-function hello() {
-  echo "Hello, $1!"
-}
+
+echo ls -l
+echo "Hello, $1!"
