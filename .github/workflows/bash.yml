@@ -16,39 +16,19 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: checkout
-        uses: actions/checkout@v4.1.6
-
       - name: convert to lowercase
         run: |
           UPPER="HELLO"
           lower=$(echo $UPPER | tr 'A-Z' 'a-z')
           echo "lowercase: $lower"
 
+      - name: checkout
+        uses: actions/checkout@v4.1.6
       - name: use calculate_days.sh
         run: |
           msg=$(bash ./scripts/hello.sh "Nadeem")
           echo "msg: $msg"
 
-          ls -l /scripts
-
-      - name: convert dash to underscore
-        run: |
-          DASH="hello-world"
-          underscore=$(echo $DASH | tr '-' '_')
-          echo "underscore: $underscore"
-
-      - name: convert underscore to underscore
-        run: |
-          DASH="HelloWorld"
-          underscore=$(echo $DASH | tr '_' '-' | tr 'A-Z' 'a-z')
-          echo "underscore: $underscore"
-
-      - name: check for null
-        run: |
-          unset str
-          if [ -z "$str" ]; then
-            echo "$str is empty"
-          else
-            echo "$str is not empty"
-          fi
+          pwd
+          ls -l
+          ls -l ./scripts
