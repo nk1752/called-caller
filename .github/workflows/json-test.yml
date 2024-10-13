@@ -2,29 +2,6 @@ name: json testing
 
 on:
   workflow_dispatch:
-    inputs:
-      env:
-        type: choice
-        description: select enironment
-        options: 
-          - dev
-          - qa
-          - prod
-      size:
-        type: choice
-        description: Which size to use
-        options:
-          - small
-          - medium
-          - large
-      no:
-        type: number
-        description: Number of objects to create
-        default: 1
-
-  push:
-      branches:
-        - main
  
 permissions:
   contents: read

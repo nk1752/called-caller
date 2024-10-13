@@ -20,6 +20,8 @@ on:
 
 jobs:
   register-renew:
+    # run this job on dispatch event or cron job
+    if: ${{ github.event_name == 'workflow_call' || github.event_name == 'schedule' }}
     runs-on: ubuntu-latest
 
     steps:

@@ -2,9 +2,9 @@ name: bash scripting
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  push:
+    branches:
+      - main
 
 permissions:
   contents: read
@@ -21,6 +21,11 @@ jobs:
           UPPER="HELLO"
           lower=$(echo $UPPER | tr 'A-Z' 'a-z')
           echo "lowercase: $lower"
+
+      - name: get current date by calling calculate_days.sh
+        run: |
+          date=$(bash calculate_days.sh)
+          echo "date: $date"
 
       - name: convert dash to underscore
         run: |

@@ -2,9 +2,9 @@ name: caller
 
 on:
   workflow_dispatch:
-  # push:
-  #   branches:
-  #     - main
+  # setup cron job
+  schedule:
+    - cron: '0 0 * * *'
   
 permissions:
   contents: read
@@ -16,4 +16,16 @@ jobs:
       uses: ./.github/workflows/create-reg-reusable.yml
       with:
         obj: "fgw_1"
-        env: "dev"
+        env: "qa"
+
+    registration-job2:
+      uses: ./.github/workflows/create-reg-reusable.yml
+      with:
+        obj: "fgw_1"
+        env: "qa"
+
+    registration-job3:
+      uses: ./.github/workflows/create-reg-reusable.yml
+      with:
+        obj: "fgw_1"
+        env: "qa"
