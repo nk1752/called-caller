@@ -4,5 +4,5 @@
 get_expiry_days() {
   date +"%Y-%m-%d"
 
-  return date
+  return $date
 }
