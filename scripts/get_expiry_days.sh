@@ -5,5 +5,5 @@ get_expiry_days() {
   date +"%Y-%m-%d"
   echo "$date"
 
-  return "$date"
+  return "hello"
 }
