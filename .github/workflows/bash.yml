@@ -18,7 +18,7 @@ jobs:
     steps:
       - name: checkout
         uses: actions/checkout@v4.1.6
-        
+
       - name: convert to lowercase
         run: |
           UPPER="HELLO"
@@ -27,7 +27,8 @@ jobs:
 
       - name: get current date by calling calculate_days.sh
         run: |
-          date=$(bash ./scripts/calculate_days.sh)
+          ls -l scripts
+          date=$(bash scripts/calculate_days.sh)
           echo "date: $date"
 
       - name: convert dash to underscore
