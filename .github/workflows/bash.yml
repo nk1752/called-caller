@@ -32,7 +32,7 @@ jobs:
 
       - name: days
         run: |
-          days=$(bash ./scripts/get_expiry_days.sh "2022-12-31")
+          days=$(bash ./scripts/get_expiry_days.sh "2026-12-31")
           echo "days: $days"
           
 
