@@ -27,7 +27,7 @@ jobs:
 
       - name: get current date by calling calculate_days.sh
         run: |
-          date=$(bash ./scripts/get_expiry_days.sh "Nadeem")
+          date=$(bash ./scripts/get_expiry_days.sh "2022-12-31")
           echo "date: $date"
 
       - name: convert dash to underscore
