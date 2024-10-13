@@ -24,7 +24,7 @@ jobs:
 
       - name: get current date by calling calculate_days.sh
         run: |
-          date=$(bash calculate_days.sh)
+          date=$(bash scripts/calculate_days.sh)
           echo "date: $date"
 
       - name: convert dash to underscore
