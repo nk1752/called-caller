@@ -26,9 +26,8 @@ jobs:
           echo "lowercase: $lower"
 
       - name: get current date by calling calculate_days.sh
-        run: |
-          date=$(bash ./scripts/get_expiry_days.sh "2022-12-31")
-          echo "date: $date"
+        run: ./scripts/hello.sh "Nadeem"
+          
 
       - name: convert dash to underscore
         run: |
