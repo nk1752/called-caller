@@ -1,7 +1,7 @@
 #!/bin/bash
 
-# Get the current date
-current_date=$(date utc +%s)
+# Get the current date in utc seconds
+current_date=$(date +%s)
 
 # Get the expiry date
 expiry_date=$(date -d "$1" +%s)

@@ -25,12 +25,17 @@ jobs:
           lower=$(echo $UPPER | tr 'A-Z' 'a-z')
           echo "lowercase: $lower"
 
-      - name: get current date by calling calculate_days.sh
+      - name: use calculate_days.sh
         run: |
           msg=$(bash ./scripts/hello.sh "Nadeem")
           echo "msg: $msg"
 
       - name: days
+        run: |
+          days=$(bash ./scripts/daysToExpiry "2026-12-31")
+          echo "days: $days"
+
+      - name: use function
         run: |
           days=$(bash ./scripts/get_expiry_days.sh "2026-12-31")
           echo "days: $days"
