@@ -28,6 +28,6 @@ jobs:
       - name: build json
         run: |
           name="Nadeem"
-          echo '{"name": "$name", "age": 25}' >> data.json
-          cat data.json
+          echo '{}' | jq '.name = "John" | .age = 30 | .city = "New York"' > data.json
+          jq '.' data.json
       
