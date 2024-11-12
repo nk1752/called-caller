@@ -24,11 +24,10 @@ jobs:
 
       - name: checkout
         uses: actions/checkout@v4.1.6
-      - name: use calculate_days.sh
-        run: |
-          msg=$(bash ./scripts/hello.sh "Nadeem")
-          echo "msg: $msg"
 
-          pwd
-          ls -l
-          ls -l ./scripts
+      - name: build json
+        run: |
+          name="Nadeem"
+          echo '{"name": $name, "age": 25}' >> data.json
+          cat data.json
+      
